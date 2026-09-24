@@ -43,14 +43,14 @@ const UserHome = () => {
     return () => clearInterval(interval);
   }, [heroProducts.length]);
 
-  const heroTitle = settings?.hero_title || 'Bespoke Dresses\nCrafted to Perfection.';
-  const heroSubtitle = settings?.hero_subtitle || 'Exquisite custom-made dresses exported worldwide. Responsibly sourced, precisely tailored, and built to international standards.';
+  const heroTitle = settings?.hero_title || 'Wear the standard\nyou\'re proud of.';
+  const heroSubtitle = settings?.hero_subtitle || 'Responsibly sourced, precisely cut apparel built to last. Discover pieces designed to move with you.';
   const heroCta = settings?.cta_text || 'Shop the Collection';
   const heroLink = settings?.cta_link || '/products';
   const heroImage = settings?.hero_bg || heroImg;
 
-  // Find a global sale or any sale with a banner
-  const saleBanner = activeSales.find(s => s.banner_image_url || s.banner_title);
+  // Find a global sale or any sale with a banner, fallback to the first active sale
+  const saleBanner = activeSales.find(s => s.banner_image_url || s.banner_title) || activeSales[0];
 
   const handleInquiry = async (e) => {
     e.preventDefault();

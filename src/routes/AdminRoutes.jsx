@@ -12,6 +12,7 @@ import AdminCustomers from '../pages/admin/AdminCustomers';
 import AdminSettings from '../pages/admin/AdminSettings';
 import AdminHomeSettings from '../pages/admin/AdminHomeSettings';
 import AdminSales from '../pages/admin/AdminSales';
+import AdminBlogs from '../pages/admin/AdminBlogs';
 import AdminMessages from '../pages/admin/AdminMessages';
 import AdminSizeGuide from '../pages/admin/AdminSizeGuide';
 import AdminTestimonials from '../pages/admin/AdminTestimonials';
@@ -43,6 +44,7 @@ const AdminRoutes = () => {
         <Route path="settings" element={<AdminSettings />} />
         <Route path="home-settings" element={<AdminHomeSettings />} />
         <Route path="sales" element={<AdminSales />} />
+        <Route path="blogs" element={<AdminBlogs />} />
          <Route path="messages" element={<AdminMessages />} />
          <Route path="testimonials" element={<AdminTestimonials />} />
          <Route path="testimonials/new" element={<TestimonialForm />} />

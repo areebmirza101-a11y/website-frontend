@@ -105,10 +105,10 @@ const AdminSales = () => {
 
     try {
       if (editingSale) {
-        await apiFetch(`/promotions/${editingSale.id}`, { method: 'PUT', body: fd, isFormData: true });
+        await apiFetch(`/promotions/${editingSale.id}`, { method: 'PUT', body: fd, isFormData: true, auth: true });
         toast.success('Sale updated successfully');
       } else {
-        await apiFetch('/promotions', { method: 'POST', body: fd, isFormData: true });
+        await apiFetch('/promotions', { method: 'POST', body: fd, isFormData: true, auth: true });
         toast.success('Sale created successfully');
       }
       handleCloseModal();
@@ -121,7 +121,7 @@ const AdminSales = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this sale?')) {
       try {
-        await apiFetch(`/promotions/${id}`, { method: 'DELETE' });
+        await apiFetch(`/promotions/${id}`, { method: 'DELETE', auth: true });
         toast.success('Sale deleted');
         fetchSales();
       } catch (err) {

@@ -15,6 +15,8 @@ import ShippingPolicy from '../pages/ShippingPolicy';
 import ReturnRefund from '../pages/ReturnRefund';
 import SizeGuide from '../pages/SizeGuide';
 import UserProfile from '../pages/UserProfile';
+import UserBlogs from '../pages/UserBlogs';
+import UserBlogDetail from '../pages/UserBlogDetail';
 import { NotFound, ServerError, Unauthorized, Forbidden, BadRequest } from '../pages/errors';
 
 const mapStatusToError = (status) => {
@@ -43,6 +45,8 @@ const UserRoutes = () => {
         <Route path="login" element={<UserLogin />} />
         <Route path="about" element={<UserAbout />} />
         <Route path="contact" element={<UserContact />} />
+        <Route path="blogs" element={<UserBlogs />} />
+        <Route path="blogs/:slug" element={<UserBlogDetail />} />
         <Route path="orders" element={<UserOrders />} />
         <Route path="profile" element={<UserProfile />} />
         <Route path="401" element={<Unauthorized />} />

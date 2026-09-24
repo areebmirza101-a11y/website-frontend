@@ -116,12 +116,12 @@ export function DualAreaChart({ data = [], seriesA, seriesB }) {
           <AreaChart data={data} margin={{ top: 16, right: 16, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="gradA" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stopColor={colorA} stopOpacity={0.35} />
-                <stop offset="100%" stopColor={colorA} stopOpacity={0} />
+                <stop offset="5%" stopColor={colorA} stopOpacity={0.8}/>
+                <stop offset="95%" stopColor={colorA} stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="gradB" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stopColor={colorB} stopOpacity={0.35} />
-                <stop offset="100%" stopColor={colorB} stopOpacity={0} />
+                <stop offset="5%" stopColor={colorB} stopOpacity={0.8}/>
+                <stop offset="95%" stopColor={colorB} stopOpacity={0}/>
               </linearGradient>
             </defs>
 

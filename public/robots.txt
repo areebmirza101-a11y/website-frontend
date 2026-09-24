@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /checkout/
+Disallow: /login
+Disallow: /profile
+Disallow: /orders
+
+# Sitemap
+Sitemap: https://www.velmorascreation.com/api/sitemap.xml

@@ -1,6 +1,6 @@
 import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { LayoutDashboard, Package, Tags, ShoppingCart, LogOut, Store, Settings, MessageCircle, Users, Sun, Moon, Ruler, Percent } from 'lucide-react';
+import { LayoutDashboard, Package, Tags, ShoppingCart, LogOut, Store, Settings, MessageCircle, Users, Sun, Moon, Ruler, Percent, BookOpen } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import AdminPageTitleContext from './AdminPageTitleContext';
@@ -13,6 +13,7 @@ const nav = [
   { to: '/admin/orders', label: 'Orders', icon: ShoppingCart },
   { to: '/admin/customers', label: 'Customers', icon: Users },
   { to: '/admin/sales', label: 'Sales & Promos', icon: Percent },
+  { to: '/admin/blogs', label: 'Blogs', icon: BookOpen },
   { to: '/admin/settings', label: 'General Settings', icon: Settings },
   { to: '/admin/home-settings', label: 'Home Settings', icon: LayoutDashboard },
   { to: '/admin/messages', label: 'Messages', icon: MessageCircle },

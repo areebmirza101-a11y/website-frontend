@@ -51,10 +51,10 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [bucket, setBucket] = useState('monthly'); // weekly | monthly
   const [refreshing, setRefreshing] = useState(false);
-  // default range = last month (30d)
+  // default range = last week (7d)
   const [range, setRange] = useState(() => {
-    const p = PRESETS.find((x) => x.key === '30d');
-    return { preset: '30d', ...p.range() };
+    const p = PRESETS.find((x) => x.key === '7d');
+    return { preset: '7d', ...p.range() };
   });
 
   useAdminTitle('Dashboard');
@@ -109,8 +109,8 @@ const Dashboard = () => {
         >
           <DualAreaChart
             data={stats.timeseries}
-            seriesA={{ key: 'revenue', label: 'Revenue', color: '#4f46e5', format: (v) => money(v) }}
-            seriesB={{ key: 'visits', label: 'Visitors', color: '#ec4899', format: (v) => `${Math.round(v)}` }}
+            seriesA={{ key: 'revenue', label: 'Revenue', color: '#10b981', format: (v) => money(v) }}
+            seriesB={{ key: 'visits', label: 'Visitors', color: '#8b5cf6', format: (v) => `${Math.round(v)}` }}
           />
         </Card>
 

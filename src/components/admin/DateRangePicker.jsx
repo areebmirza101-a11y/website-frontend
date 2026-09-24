@@ -41,7 +41,7 @@ export default function DateRangePicker({ value, onChange }) {
     ? activePreset.label
     : value?.start && value?.end
     ? `${value.start} → ${value.end}`
-    : 'Last month';
+    : 'Last week';
 
   const pick = (preset) => {
     const r = preset.range();
@@ -71,8 +71,8 @@ export default function DateRangePicker({ value, onChange }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-30 mt-2 w-72 rounded-2xl border border-gray-100 bg-white p-3 shadow-xl">
-          <div className="grid grid-cols-2 gap-1.5">
+        <div className="absolute right-0 z-30 mt-2 w-56 rounded-2xl border border-gray-100 bg-white p-3 shadow-xl">
+          <div className="flex flex-col gap-1">
             {PRESETS.map((p) => (
               <button
                 key={p.key}

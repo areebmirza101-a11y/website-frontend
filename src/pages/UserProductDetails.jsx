@@ -5,6 +5,7 @@ import { productApi } from '../api';
 import { money, productImage, categoryName } from '../lib/format';
 import { assetUrl } from '../api/client';
 import { ArrowLeft, Check, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
+import Seo from '../components/Seo';
 
 const UserProductDetails = () => {
   const { id } = useParams();
@@ -96,6 +97,30 @@ const UserProductDetails = () => {
 
   return (
     <div className="bg-white min-h-screen pt-12 pb-24">
+      <Seo 
+        title={product.name}
+        description={product.description}
+        image={activeImg}
+        url={window.location.href}
+      />
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": product.name,
+          "image": activeImg ? [activeImg] : [],
+          "description": product.description,
+          "sku": product.id,
+          "offers": {
+            "@type": "Offer",
+            "url": window.location.href,
+            "priceCurrency": "PKR",
+            "price": displayPrice,
+            "availability": soldOut ? "https://schema.org/OutOfStock" : "https://schema.org/InStock"
+          }
+        })}
+      </script>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Link to="/products" className="inline-flex items-center text-sm text-gray-500 hover:text-ink transition-colors">

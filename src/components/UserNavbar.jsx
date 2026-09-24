@@ -4,11 +4,13 @@ import { ShoppingBag, Search, Menu, X, User, LogOut, LayoutDashboard, Sun, Moon,
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useSales } from '../context/SalesContext';
 import { categoryApi, settingsApi } from '../api';
 
 const UserNavbar = () => {
   const { cartCount, toggleCart } = useCart();
   const { user, isAdmin, logout } = useAuth();
+  const { activeSales } = useSales();
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,6 +53,12 @@ const UserNavbar = () => {
           <nav className="hidden md:flex space-x-8 items-center h-full">
             <Link to="/" className="text-gray-600 hover:text-accent font-medium transition-colors">Home</Link>
             
+            {activeSales && activeSales.length > 0 && (
+              <Link to="/products?on_sale=true" className="text-red-500 font-bold hover:text-red-600 transition-colors flex items-center gap-1">
+                Sale <span className="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-full">HOT</span>
+              </Link>
+            )}
+            
             <div className="relative group h-full flex items-center">
               <Link to="/products" className="text-gray-600 group-hover:text-accent font-medium transition-colors flex items-center gap-1 h-full">
                 Shop All <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" />
@@ -87,6 +95,7 @@ const UserNavbar = () => {
             </div>
 
             <Link to="/about" className="text-gray-600 hover:text-accent font-medium transition-colors">About</Link>
+            <Link to="/blogs" className="text-gray-600 hover:text-accent font-medium transition-colors">Journal</Link>
             <Link to="/contact" className="text-gray-600 hover:text-accent font-medium transition-colors">Contact</Link>
           </nav>
 
@@ -159,8 +168,14 @@ const UserNavbar = () => {
           </form>
           <div className="flex flex-col space-y-4 pt-2">
             <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-800 font-medium text-lg">Home</Link>
+            {activeSales && activeSales.length > 0 && (
+              <Link to="/products?on_sale=true" onClick={() => setIsMobileMenuOpen(false)} className="text-red-500 font-bold text-lg flex items-center gap-2">
+                Sale <span className="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">HOT</span>
+              </Link>
+            )}
             <Link to="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-800 font-medium text-lg">Shop All</Link>
             <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-800 font-medium text-lg">About</Link>
+            <Link to="/blogs" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-800 font-medium text-lg">Journal</Link>
             <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-800 font-medium text-lg">Contact</Link>
             {user && (
               <Link to="/orders" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-800 font-medium text-lg">My Orders</Link>

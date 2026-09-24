@@ -10,11 +10,18 @@ export const SalesProvider = ({ children }) => {
     // Fetch only active sales
     apiFetch('/promotions?active=true')
       .then(data => {
-        // Filter out future sales or expired sales
-        const now = new Date();
+        // Filter out future sales or expired sales using YYYY-MM-DD to avoid timezone bugs
+        const d = new Date();
+        const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         const validSales = (data || []).filter(sale => {
-          if (sale.start_date && new Date(sale.start_date) > now) return false;
-          if (sale.end_date && new Date(sale.end_date) < now) return false;
+          if (sale.start_date) {
+            const startStr = sale.start_date.split('T')[0];
+            if (startStr > todayStr) return false;
+          }
+          if (sale.end_date) {
+            const endStr = sale.end_date.split('T')[0];
+            if (endStr < todayStr) return false;
+          }
           return true;
         });
         setActiveSales(validSales);

@@ -3,12 +3,16 @@ import { useSearchParams } from 'react-router-dom';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { productApi, categoryApi } from '../api';
+import { useSales } from '../context/SalesContext';
 
 const UserProducts = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category') || 'all';
   const searchParam = searchParams.get('search') || '';
+  const onSaleParam = searchParams.get('on_sale') === 'true';
+  const sortParam = searchParams.get('sort') || 'newest';
 
+  const { getProductSale, activeSales } = useSales();
   const [categories, setCategories] = useState([]);
   const [expandedCats, setExpandedCats] = useState({});
   const [products, setProducts] = useState([]);
@@ -28,20 +32,58 @@ const UserProducts = () => {
   useEffect(() => {
     setLoading(true);
     productApi
-      .list({ category: categoryParam, search: searchParam, limit: 60 })
-      .then((d) => setProducts(d.products))
+      .list({ category: categoryParam, search: searchParam, limit: 1000 })
+      .then((d) => {
+        let prods = d.products || [];
+        if (onSaleParam) {
+           prods = prods.filter(p => getProductSale(p) !== null);
+        }
+        
+        // Sorting
+        prods = [...prods].sort((a, b) => {
+          if (sortParam === 'price_asc') {
+            const priceA = getProductSale(a) ? getProductSale(a).salePrice : a.price;
+            const priceB = getProductSale(b) ? getProductSale(b).salePrice : b.price;
+            return priceA - priceB;
+          }
+          if (sortParam === 'price_desc') {
+            const priceA = getProductSale(a) ? getProductSale(a).salePrice : a.price;
+            const priceB = getProductSale(b) ? getProductSale(b).salePrice : b.price;
+            return priceB - priceA;
+          }
+          if (sortParam === 'trending') {
+            return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+          }
+          // Default: newest
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
+
+        setProducts(prods);
+      })
       .catch(() => setProducts([]))
       .finally(() => setLoading(false));
-  }, [categoryParam, searchParam]);
+  }, [categoryParam, searchParam, onSaleParam, sortParam, activeSales]);
 
   const handleCategoryClick = (slug) => {
     if (slug === 'all') searchParams.delete('category');
     else searchParams.set('category', slug);
+    searchParams.delete('on_sale');
+    setSearchParams(searchParams);
+  };
+
+  const handleSaleClick = () => {
+    searchParams.set('on_sale', 'true');
+    searchParams.delete('category');
     setSearchParams(searchParams);
   };
 
   const toggleExpand = (id) => {
     setExpandedCats(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const handleSortChange = (e) => {
+    searchParams.set('sort', e.target.value);
+    setSearchParams(searchParams);
   };
 
   const topCategories = categories.filter(c => !c.parent_id);
@@ -56,12 +98,27 @@ const UserProducts = () => {
               Explore The Collection
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-ink uppercase">
-              {searchParam ? `Results for "${searchParam}"` : 'All Products'}
+              {searchParam ? `Results for "${searchParam}"` : onSaleParam ? 'Sale Offers' : 'All Products'}
             </h1>
           </div>
-          <p className="text-gray-500 font-medium text-sm tracking-widest uppercase">
-            {searchParam ? `${products.length} items found` : 'Everyday luxury'}
-          </p>
+          <div className="flex flex-col md:items-end gap-4">
+            <p className="text-gray-500 font-medium text-sm tracking-widest uppercase">
+              {searchParam ? `${products.length} items found` : onSaleParam ? 'Limited time discounts' : 'Everyday luxury'}
+            </p>
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Sort by:</span>
+              <select
+                value={sortParam}
+                onChange={handleSortChange}
+                className="bg-white border border-gray-200 text-ink text-sm font-medium rounded-xl px-4 py-2 focus:ring-2 focus:ring-accent focus:border-transparent outline-none cursor-pointer"
+              >
+                <option value="newest">Newest First</option>
+                <option value="trending">Trending</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-col md:flex-row gap-12 lg:gap-20">
@@ -79,6 +136,17 @@ const UserProducts = () => {
                     All Collection
                   </button>
                 </li>
+                {activeSales.length > 0 && (
+                  <li>
+                    <button
+                      onClick={handleSaleClick}
+                      className={`text-xs tracking-widest uppercase transition-all duration-300 w-full text-left flex items-center justify-between ${onSaleParam ? 'text-red-500 font-black translate-x-2' : 'text-red-400 font-bold hover:text-red-600 hover:translate-x-1'
+                        }`}
+                    >
+                      On Sale <span className="bg-red-500 text-white text-[9px] px-2 py-0.5 rounded-full">HOT</span>
+                    </button>
+                  </li>
+                )}
                 {topCategories.map((c) => {
                   const hasSubs = c.subcategories && c.subcategories.length > 0;
                   const isExpanded = expandedCats[c.id];
