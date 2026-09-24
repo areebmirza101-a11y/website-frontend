@@ -229,11 +229,11 @@ const UserHome = () => {
             <h2 className="text-3xl font-bold tracking-tight text-ink mt-2 mb-2">Shop by Category</h2>
             <p className="text-muted">Find your fit across our collections.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {categories.filter(c => !c.parent_id && c.show_on_home).map((c, idx) => {
               const catSale = getCategorySale(c.id);
               return (
-              <Link key={c.id} to={`/products?category=${c.slug}`} className="group relative h-80 rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 bg-gray-900">
+              <Link key={c.id} to={`/products?category=${c.slug}`} className="group relative h-48 sm:h-80 rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 bg-gray-900">
                 {catSale && (
                   <span className="absolute top-4 left-4 z-20 bg-[#BA9B74] text-white text-[10px] font-bold tracking-widest uppercase px-4 py-1.5 rounded-full shadow-md">
                     {catSale.discount_type === 'percentage' ? `${catSale.discount_value}% OFF` : `SALE`}
@@ -246,12 +246,12 @@ const UserHome = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
 
-                <div className="absolute inset-0 p-8 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="w-10 h-1 bg-accent rounded-full mb-4 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                  <h3 className="text-3xl font-extrabold text-white mb-3 drop-shadow-md">{c.name}</h3>
-                  <div className="inline-flex items-center text-white font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                    <span className="bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/30 flex items-center gap-2 shadow-lg">
-                      Explore Collection <span className="text-accent font-bold group-hover:translate-x-1 transition-transform">→</span>
+                <div className="absolute inset-0 p-4 sm:p-8 flex flex-col justify-end translate-y-2 sm:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                  <div className="w-8 sm:w-10 h-1 bg-accent rounded-full mb-2 sm:mb-4 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                  <h3 className="text-xl sm:text-3xl font-extrabold text-white mb-2 sm:mb-3 drop-shadow-md">{c.name}</h3>
+                  <div className="inline-flex items-center text-white font-medium text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                    <span className="bg-white/20 backdrop-blur-md px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full border border-white/30 flex items-center gap-1 sm:gap-2 shadow-lg">
+                      Explore <span className="hidden sm:inline">Collection</span> <span className="text-accent font-bold group-hover:translate-x-1 transition-transform">→</span>
                     </span>
                   </div>
                 </div>
@@ -274,7 +274,7 @@ const UserHome = () => {
               View All <span className="ml-2">→</span>
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-10">
             {featured.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

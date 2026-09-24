@@ -94,23 +94,23 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Bottom Text Section */}
-      <div className="p-5 flex flex-col flex-grow bg-white">
-        <div className="mb-2 flex justify-between items-start gap-4">
+      <div className="p-3 sm:p-5 flex flex-col flex-grow bg-white">
+        <div className="mb-2 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-4">
           <Link to={targetUrl} className="hover:text-accent transition-colors flex-1">
-            <h3 className="text-base font-bold text-ink line-clamp-1 group-hover:text-accent transition-colors">{product.name}</h3>
+            <h3 className="text-sm sm:text-base font-bold text-ink line-clamp-1 group-hover:text-accent transition-colors">{product.name}</h3>
           </Link>
-          <div className="flex flex-col items-end">
+          <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 sm:gap-0">
             {saleInfo ? (
               <>
-                <p className="text-base font-extrabold text-[#BA9B74] whitespace-nowrap">{money(currentPrice)}</p>
-                <p className="text-[11px] font-bold text-gray-400 line-through whitespace-nowrap">{money(product.price)}</p>
+                <p className="text-sm sm:text-base font-extrabold text-[#BA9B74] whitespace-nowrap">{money(currentPrice)}</p>
+                <p className="text-[10px] sm:text-[11px] font-bold text-gray-400 line-through whitespace-nowrap">{money(product.price)}</p>
               </>
             ) : (
-              <p className="text-base font-extrabold text-ink bg-gray-50 px-3 py-1 rounded-xl whitespace-nowrap">{money(currentPrice)}</p>
+              <p className="text-sm sm:text-base font-extrabold text-ink bg-gray-50 px-2 py-0.5 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl whitespace-nowrap">{money(currentPrice)}</p>
             )}
           </div>
         </div>
-        <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-4">{categoryName(product)}</p>
+        <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3 sm:mb-4">{categoryName(product)}</p>
 
         {/* Mobile Add to Cart Button */}
         <button
