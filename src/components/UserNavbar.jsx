@@ -44,12 +44,13 @@ const UserNavbar = () => {
     <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-40 border-b border-gray-200 transition-colors duration-300">
       <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          <Link to="/" className="flex-shrink-0 flex items-center">
-            {logoUrl ? (
-              <img src={logoUrl} alt={companyName} className="h-8 w-auto object-contain" />
-            ) : (
-              <span className="font-bold text-2xl tracking-[0.2em] text-ink transition-colors duration-300">{companyName.toUpperCase()}<span className="text-accent">.</span></span>
+          <Link to="/" className="flex-shrink-0 flex items-center gap-3">
+            {logoUrl && (
+              <img src={logoUrl} alt={companyName} className="h-10 w-auto object-contain rounded-full border border-gray-100/50 shadow-sm" />
             )}
+            <span className="font-bold text-xl md:text-2xl tracking-[0.1em] md:tracking-[0.2em] text-ink transition-colors duration-300">
+              {companyName.toUpperCase()}<span className="text-accent">.</span>
+            </span>
           </Link>
 
           <nav className="hidden md:flex space-x-8 items-center h-full">

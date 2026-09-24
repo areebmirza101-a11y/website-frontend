@@ -28,11 +28,12 @@ const UserFooter = () => {
       <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 mb-12">
           <div className="md:col-span-4 lg:col-span-4">
-            {logoUrl ? (
-              <img src={logoUrl} alt={companyName} className="h-10 w-auto object-contain mb-4 block" />
-            ) : (
-              <span className="font-bold text-2xl tracking-[0.2em] text-ink block mb-4">{companyName.toUpperCase()}<span className="text-accent">.</span></span>
-            )}
+            <div className="flex items-center gap-3 mb-6">
+              {logoUrl && (
+                <img src={logoUrl} alt={companyName} className="h-12 w-auto object-contain rounded-full border border-gray-100/50 shadow-sm" />
+              )}
+              <span className="font-bold text-xl md:text-2xl tracking-[0.1em] md:tracking-[0.2em] text-ink">{companyName.toUpperCase()}<span className="text-accent">.</span></span>
+            </div>
             <p className="text-gray-500 text-sm mb-6 max-w-xs">
               Global apparel export. Thoughtfully made clothing for men, women and kids — shipped worldwide.
             </p>
