@@ -48,7 +48,7 @@ const UserNavbar = () => {
             {logoUrl && (
               <img src={logoUrl} alt={companyName} className="h-10 sm:h-12 w-auto object-contain rounded-full border border-gray-100/50 shadow-sm" />
             )}
-            <span className={`font-bold text-lg sm:text-xl md:text-2xl tracking-[0.1em] md:tracking-[0.2em] text-ink transition-colors duration-300 ${logoUrl ? 'hidden xl:inline-block' : ''}`}>
+            <span className={`font-bold text-base md:text-lg tracking-widest text-ink transition-colors duration-300 ${logoUrl ? 'hidden xl:inline-block' : ''}`}>
               {companyName.toUpperCase()}<span className="text-accent">.</span>
             </span>
           </Link>

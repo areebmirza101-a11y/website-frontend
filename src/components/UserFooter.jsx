@@ -32,7 +32,7 @@ const UserFooter = () => {
               {logoUrl && (
                 <img src={logoUrl} alt={companyName} className="h-12 w-auto object-contain rounded-full border border-gray-100/50 shadow-sm" />
               )}
-              <span className="font-bold text-xl md:text-2xl tracking-[0.1em] md:tracking-[0.2em] text-ink">{companyName.toUpperCase()}<span className="text-accent">.</span></span>
+              <span className="font-bold text-base md:text-lg tracking-widest text-ink">{companyName.toUpperCase()}<span className="text-accent">.</span></span>
             </div>
             <p className="text-gray-500 text-sm mb-6 max-w-xs">
               Global apparel export. Thoughtfully made clothing for men, women and kids — shipped worldwide.
