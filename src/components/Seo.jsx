@@ -2,9 +2,8 @@ import { useEffect } from 'react';
 
 // Build a full browser title like: "Velmoras Creation — Products"
 const buildTitle = (pageTitle) => {
-  const brand = window.__COMPANY_NAME__;
-  if (!pageTitle) return brand || 'Store';
-  if (!brand)    return pageTitle;
+  const brand = window.__COMPANY_NAME__ || 'Velmoras Creation';
+  if (!pageTitle) return brand;
   return `${brand} — ${pageTitle}`;
 };
 
@@ -52,7 +51,7 @@ const setMetaTag = (attrName, attrValue, content) => {
     }
 
     return () => {
-      document.title = window.__DEFAULT_TITLE__ || window.__COMPANY_NAME__ || 'Store';
+      document.title = window.__DEFAULT_TITLE__ || window.__COMPANY_NAME__ || 'Velmoras Creation';
       
       const script = document.querySelector('script[type="application/ld+json"]');
       if (script) {
