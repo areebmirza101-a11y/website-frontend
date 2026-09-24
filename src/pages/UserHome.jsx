@@ -67,33 +67,31 @@ const UserHome = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero */}
-      <section className="relative h-[85vh] min-h-[600px] flex items-center overflow-hidden bg-white">
-
-        
-        <div className="relative w-[90%] max-w-[1920px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full pt-16 pb-16 z-10">
+      <section className="relative min-h-screen lg:min-h-[600px] lg:h-[85vh] flex items-center overflow-hidden bg-white pt-24 pb-12 lg:py-0">
+        <div className="relative w-[90%] max-w-[1920px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full z-10">
           {heroProducts.length > 0 ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 h-full items-center gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 h-full items-center gap-12 lg:gap-8">
               {/* Text Column */}
-              <div className="max-w-xl z-10 pl-0 lg:pl-10">
+              <div className="max-w-xl z-10 pl-0 lg:pl-10 text-center lg:text-left mx-auto lg:mx-0 mt-8 lg:mt-0">
                 <span className="inline-block bg-[#EBE7DF] text-[#A68A61] font-bold tracking-[0.05em] text-[11px] uppercase px-3 py-1.5 mb-6">
                   NEW ARRIVAL...
                 </span>
-                <h1 className="text-4xl sm:text-6xl lg:text-[5rem] font-bold tracking-tight text-[#2D2D2D] leading-[1.05] mb-6 whitespace-pre-line">
+                <h1 className="text-4xl sm:text-5xl lg:text-[5rem] font-bold tracking-tight text-[#2D2D2D] leading-[1.1] mb-6 whitespace-pre-line">
                   {heroTitle}
                 </h1>
-                <p className="text-[15px] text-[#7A7A7A] leading-[1.7] mb-10 max-w-[400px]">
+                <p className="text-[15px] text-[#7A7A7A] leading-[1.7] mb-10 max-w-[400px] mx-auto lg:mx-0">
                   {heroSubtitle}
                 </p>
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                   <Link
                     to={`/products/${heroProducts[currentHeroIdx].slug}`}
-                    className="inline-flex items-center bg-[#BA9B74] text-white px-8 py-3.5 rounded-full font-medium text-[13px] tracking-widest hover:bg-[#A68A61] transition-all shadow-sm hover:shadow-md"
+                    className="inline-flex items-center justify-center w-full sm:w-auto bg-[#BA9B74] text-white px-8 py-3.5 rounded-full font-medium text-[13px] tracking-widest hover:bg-[#A68A61] transition-all shadow-sm hover:shadow-md"
                   >
                     {heroCta.toUpperCase()}
                   </Link>
                   <Link
                     to={`/products/${heroProducts[currentHeroIdx].slug}`}
-                    className="inline-flex items-center text-[#BA9B74] bg-white px-8 py-3.5 rounded-full border border-[#BA9B74] font-medium text-[13px] tracking-widest hover:bg-[#BA9B74]/10 transition-all"
+                    className="inline-flex items-center justify-center w-full sm:w-auto text-[#BA9B74] bg-white px-8 py-3.5 rounded-full border border-[#BA9B74] font-medium text-[13px] tracking-widest hover:bg-[#BA9B74]/10 transition-all"
                   >
                     VIEW DETAILS
                   </Link>
@@ -101,24 +99,24 @@ const UserHome = () => {
               </div>
 
               {/* Product Column */}
-              <div className="relative h-full flex items-center justify-center mt-10 lg:mt-0">
+              <div className="relative h-full flex items-center justify-center mt-4 lg:mt-0 pb-8 lg:pb-0">
                 
-                <div className="relative w-72 h-72 sm:w-[380px] sm:h-[380px] md:w-[500px] md:h-[500px] bg-[#E1D0BC] rounded-full overflow-hidden flex items-center justify-center z-10 shadow-xl">
+                <div className="relative w-64 h-64 sm:w-[320px] sm:h-[320px] md:w-[450px] md:h-[450px] lg:w-[500px] lg:h-[500px] bg-[#E1D0BC] rounded-full overflow-hidden flex items-center justify-center z-10 shadow-xl">
                   {heroProducts[currentHeroIdx].images && heroProducts[currentHeroIdx].images.length > 0 ? (
                     <img 
                       key={heroProducts[currentHeroIdx].id}
                       src={assetUrl(heroProducts[currentHeroIdx].images.find(i => i.is_main)?.url || heroProducts[currentHeroIdx].images[0].url)} 
                       alt={heroProducts[currentHeroIdx].name} 
-                      className="w-full h-full object-contain mix-blend-multiply p-8 transition-transform duration-700 ease-out hover:scale-105"
+                      className="w-full h-full object-contain mix-blend-multiply p-6 sm:p-8 transition-transform duration-700 ease-out hover:scale-105"
                     />
                   ) : (
-                     <img src={heroImage} alt="Placeholder" className="w-full h-full object-contain mix-blend-multiply p-8" />
+                     <img src={heroImage} alt="Placeholder" className="w-full h-full object-contain mix-blend-multiply p-6 sm:p-8" />
                   )}
                 </div>
 
                 {/* Slider Dots */}
                 {heroProducts.length > 1 && (
-                  <div className="absolute right-0 lg:-right-6 top-1/2 transform -translate-y-1/2 flex flex-col gap-2.5 z-30">
+                  <div className="absolute bottom-[-20px] lg:bottom-auto lg:right-[-10px] lg:top-1/2 lg:transform lg:-translate-y-1/2 flex flex-row lg:flex-col gap-2.5 z-30 justify-center w-full lg:w-auto">
                     {heroProducts.map((_, idx) => (
                       <button 
                         key={idx}
@@ -132,28 +130,28 @@ const UserHome = () => {
             </div>
           ) : (
             /* Fallback Hero if no show_in_hero products */
-            <div className="grid grid-cols-1 lg:grid-cols-2 h-full items-center gap-8">
-               <div className="max-w-xl z-10 pl-0 lg:pl-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 h-full items-center gap-12 lg:gap-8">
+               <div className="max-w-xl z-10 pl-0 lg:pl-10 text-center lg:text-left mx-auto lg:mx-0 mt-8 lg:mt-0">
                 <span className="inline-block bg-[#EBE7DF] text-[#A68A61] font-bold tracking-[0.05em] text-[11px] uppercase px-3 py-1.5 mb-6">
                   NEW ARRIVAL...
                 </span>
-                <h1 className="text-4xl sm:text-6xl lg:text-[5rem] font-bold tracking-tight text-[#2D2D2D] leading-[1.05] mb-6 whitespace-pre-line">
+                <h1 className="text-4xl sm:text-5xl lg:text-[5rem] font-bold tracking-tight text-[#2D2D2D] leading-[1.1] mb-6 whitespace-pre-line">
                   {heroTitle}
                 </h1>
-                <p className="text-[15px] text-[#7A7A7A] leading-[1.7] mb-10 max-w-[400px]">
+                <p className="text-[15px] text-[#7A7A7A] leading-[1.7] mb-10 max-w-[400px] mx-auto lg:mx-0">
                   {heroSubtitle}
                 </p>
-                <div className="flex flex-wrap items-center gap-4">
-                  <Link to={heroLink} className="inline-flex items-center bg-[#BA9B74] text-white px-8 py-3.5 rounded-full font-medium text-[13px] tracking-widest hover:bg-[#A68A61] transition-all shadow-sm hover:shadow-md">
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                  <Link to={heroLink} className="inline-flex items-center justify-center w-full sm:w-auto bg-[#BA9B74] text-white px-8 py-3.5 rounded-full font-medium text-[13px] tracking-widest hover:bg-[#A68A61] transition-all shadow-sm hover:shadow-md">
                     {heroCta.toUpperCase()}
                   </Link>
-                  <Link to={heroLink} className="inline-flex items-center text-[#BA9B74] bg-white px-8 py-3.5 rounded-full border border-[#BA9B74] font-medium text-[13px] tracking-widest hover:bg-[#BA9B74]/10 transition-all">
+                  <Link to={heroLink} className="inline-flex items-center justify-center w-full sm:w-auto text-[#BA9B74] bg-white px-8 py-3.5 rounded-full border border-[#BA9B74] font-medium text-[13px] tracking-widest hover:bg-[#BA9B74]/10 transition-all">
                     VIEW DETAILS
                   </Link>
                 </div>
               </div>
-              <div className="relative h-full flex items-center justify-center mt-10 lg:mt-0">
-                <div className="relative w-72 h-72 sm:w-[380px] sm:h-[380px] md:w-[500px] md:h-[500px] bg-[#E1D0BC] rounded-full overflow-hidden flex items-center justify-center z-10 shadow-xl">
+              <div className="relative h-full flex items-center justify-center mt-4 lg:mt-0 pb-8 lg:pb-0">
+                <div className="relative w-64 h-64 sm:w-[320px] sm:h-[320px] md:w-[450px] md:h-[450px] lg:w-[500px] lg:h-[500px] bg-[#E1D0BC] rounded-full overflow-hidden flex items-center justify-center z-10 shadow-xl">
                   <img src={heroImage} alt="Hero" className="w-full h-full object-cover" />
                 </div>
               </div>

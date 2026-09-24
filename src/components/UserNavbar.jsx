@@ -46,9 +46,9 @@ const UserNavbar = () => {
         <div className="flex justify-between items-center h-20">
           <Link to="/" className="flex-shrink-0 flex items-center gap-3">
             {logoUrl && (
-              <img src={logoUrl} alt={companyName} className="h-10 w-auto object-contain rounded-full border border-gray-100/50 shadow-sm" />
+              <img src={logoUrl} alt={companyName} className="h-10 sm:h-12 w-auto object-contain rounded-full border border-gray-100/50 shadow-sm" />
             )}
-            <span className="font-bold text-xl md:text-2xl tracking-[0.1em] md:tracking-[0.2em] text-ink transition-colors duration-300">
+            <span className={`font-bold text-lg sm:text-xl md:text-2xl tracking-[0.1em] md:tracking-[0.2em] text-ink transition-colors duration-300 ${logoUrl ? 'hidden xl:inline-block' : ''}`}>
               {companyName.toUpperCase()}<span className="text-accent">.</span>
             </span>
           </Link>
