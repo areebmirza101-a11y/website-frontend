@@ -1,11 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Unauthorized = ({ homePath = '/', loginPath = '/login' }) => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    navigate(loginPath, { replace: true });
-  }, [navigate, loginPath]);
   return (
     <div className="min-h-[70vh] flex items-center justify-center bg-white px-4">
       <div className="max-w-md w-full text-center">

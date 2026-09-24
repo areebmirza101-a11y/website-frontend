@@ -1,11 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const BadRequest = ({ homePath = '/' }) => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    navigate(homePath, { replace: true });
-  }, [navigate, homePath]);
   return (
     <div className="min-h-[70vh] flex items-center justify-center bg-white px-4">
       <div className="max-w-md w-full text-center">
