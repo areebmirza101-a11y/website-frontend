@@ -19,7 +19,7 @@ const setMetaTag = (attrName, attrValue, content) => {
   meta.setAttribute('content', content);
 };
 
-const Seo = ({ title, description, keywords, image, url }) => {
+  const Seo = ({ title, description, keywords, image, url, jsonLd }) => {
   useEffect(() => {
     const fullTitle = buildTitle(title);
     document.title = fullTitle;
@@ -40,10 +40,26 @@ const Seo = ({ title, description, keywords, image, url }) => {
     setMetaTag('name', 'twitter:description', description);
     if (image) setMetaTag('name', 'twitter:image', image);
 
+    // JSON-LD Structured Data
+    if (jsonLd) {
+      let script = document.querySelector('script[type="application/ld+json"]');
+      if (!script) {
+        script = document.createElement('script');
+        script.type = 'application/ld+json';
+        document.head.appendChild(script);
+      }
+      script.innerHTML = JSON.stringify(jsonLd);
+    }
+
     return () => {
       document.title = window.__DEFAULT_TITLE__ || window.__COMPANY_NAME__ || 'Store';
+      
+      const script = document.querySelector('script[type="application/ld+json"]');
+      if (script) {
+        document.head.removeChild(script);
+      }
     };
-  }, [title, description, keywords, image, url]);
+  }, [title, description, keywords, image, url, jsonLd]);
 
   return null;
 };
