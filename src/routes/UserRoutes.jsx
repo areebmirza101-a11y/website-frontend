@@ -17,6 +17,7 @@ import SizeGuide from '../pages/SizeGuide';
 import UserProfile from '../pages/UserProfile';
 import UserBlogs from '../pages/UserBlogs';
 import UserBlogDetail from '../pages/UserBlogDetail';
+import UserWishlist from '../pages/UserWishlist';
 import { NotFound, ServerError, Unauthorized, Forbidden, BadRequest } from '../pages/errors';
 
 const mapStatusToError = (status) => {
@@ -49,6 +50,7 @@ const UserRoutes = () => {
         <Route path="blogs/:slug" element={<UserBlogDetail />} />
         <Route path="orders" element={<UserOrders />} />
         <Route path="profile" element={<UserProfile />} />
+        <Route path="wishlist" element={<UserWishlist />} />
         <Route path="401" element={<Unauthorized />} />
         <Route path="403" element={<Forbidden />} />
         <Route path="400" element={<BadRequest />} />

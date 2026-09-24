@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom';
+import { Heart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useSales } from '../context/SalesContext';
 import { money, productImage, categoryName } from '../lib/format';
 import { assetUrl } from '../api/client';
 
 const ProductCard = ({ product }) => {
   const { addToCart, cartItems } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const { getProductSale } = useSales();
 
   const quickAdd = (e) => {
@@ -27,12 +30,22 @@ const ProductCard = ({ product }) => {
   return (
     <div className="group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] hover:shadow-accent/20 border border-gray-200 shadow-sm p-2 relative">
       {/* Top Image Section */}
-      <Link to={targetUrl} className="relative aspect-[4/5] overflow-hidden bg-gradient-to-b from-gray-50 to-gray-100 block rounded-[1.5rem]">
-        <img
-          src={displayImage}
-          alt={product.name}
-          className="w-full h-full object-contain mix-blend-multiply transition-all duration-1000 group-hover:scale-110 group-hover:rotate-1"
-        />
+      <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-b from-gray-50 to-gray-100 block rounded-[1.5rem]">
+        <Link to={targetUrl} className="block w-full h-full">
+          <img
+            src={displayImage}
+            alt={product.name}
+            className="w-full h-full object-contain mix-blend-multiply transition-all duration-1000 group-hover:scale-110 group-hover:rotate-1"
+          />
+        </Link>
+        
+        {/* Wishlist Button */}
+        <button
+          onClick={(e) => { e.preventDefault(); toggleWishlist(product); }}
+          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/80 backdrop-blur-md shadow-sm border border-gray-100 hover:scale-110 transition-transform"
+        >
+          <Heart className={`w-5 h-5 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
+        </button>
         
         {/* Subtle dark gradient on hover for better button contrast */}
         <div className="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -78,7 +91,7 @@ const ProductCard = ({ product }) => {
             </button>
           </div>
         )}
-      </Link>
+      </div>
 
       {/* Bottom Text Section */}
       <div className="p-5 flex flex-col flex-grow bg-white">

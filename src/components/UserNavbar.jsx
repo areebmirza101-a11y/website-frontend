@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Search, Menu, X, User, LogOut, LayoutDashboard, Sun, Moon, ChevronDown } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, User, Heart, LogOut, LayoutDashboard, Sun, Moon, ChevronDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useSales } from '../context/SalesContext';
@@ -9,6 +10,7 @@ import { categoryApi, settingsApi } from '../api';
 
 const UserNavbar = () => {
   const { cartCount, toggleCart } = useCart();
+  const { wishlistCount } = useWishlist();
   const { user, isAdmin, logout } = useAuth();
   const { activeSales } = useSales();
   const { theme, toggleTheme } = useTheme();
@@ -127,6 +129,15 @@ const UserNavbar = () => {
               </Link>
             )}
 
+            <Link to="/wishlist" className="text-gray-600 hover:text-accent transition-colors relative">
+              <Heart className="h-5 w-5" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+
             <button onClick={toggleCart} className="text-gray-600 hover:text-accent transition-colors relative">
               <ShoppingBag className="h-5 w-5" />
               {cartCount > 0 && (
@@ -139,6 +150,14 @@ const UserNavbar = () => {
 
           <div className="flex items-center md:hidden space-x-4">
 
+            <Link to="/wishlist" className="text-gray-700 relative">
+              <Heart className="h-5 w-5" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
             <button onClick={toggleCart} className="text-gray-700 relative">
               <ShoppingBag className="h-5 w-5" />
               {cartCount > 0 && (

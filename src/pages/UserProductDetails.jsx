@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { productApi } from '../api';
 import { money, productImage, categoryName } from '../lib/format';
 import { assetUrl } from '../api/client';
-import { ArrowLeft, Check, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Check, Truck, ShieldCheck, RefreshCw, Heart } from 'lucide-react';
 import Seo from '../components/Seo';
 
 const UserProductDetails = () => {
   const { id } = useParams();
   const { addToCart, cartItems } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState(null);
@@ -134,6 +136,14 @@ const UserProductDetails = () => {
             <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-gray-50 mb-6 group">
               <img src={activeImg} alt={product.name} className="w-full h-full object-contain mix-blend-multiply transition-all duration-300" />
               
+              {/* Wishlist Toggle on Image */}
+              <button
+                onClick={(e) => { e.preventDefault(); toggleWishlist(product); }}
+                className="absolute top-6 right-6 z-20 p-3 rounded-full bg-white/80 backdrop-blur-md shadow-sm border border-gray-100 hover:scale-110 transition-transform"
+              >
+                <Heart className={`w-6 h-6 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
+              </button>
+              
               {allImages.length > 1 && (
                 <>
                   <button
@@ -255,18 +265,32 @@ const UserProductDetails = () => {
               </div>
             )}
 
-            <button
-              onClick={handleAddToCart}
-              disabled={soldOut}
-              className={`w-full py-4 rounded-xl font-semibold text-lg transition-colors flex items-center justify-center ${soldOut
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : (isAdded || inCart)
-                    ? 'bg-green-600 text-white'
-                    : 'bg-ink text-white hover:bg-gray-800'
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={handleAddToCart}
+                disabled={soldOut}
+                className={`w-full py-4 rounded-xl font-semibold text-lg transition-colors flex items-center justify-center ${soldOut
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : (isAdded || inCart)
+                      ? 'bg-green-600 text-white'
+                      : 'bg-ink text-white hover:bg-gray-800'
+                  }`}
+              >
+                {soldOut ? 'Sold Out' : (isAdded || inCart) ? (<><Check className="mr-2 h-5 w-5" /> Added to Cart</>) : 'Add to Cart'}
+              </button>
+
+              <button
+                onClick={() => toggleWishlist(product)}
+                className={`w-full sm:w-auto py-4 px-8 rounded-xl font-semibold text-lg transition-colors border-2 flex items-center justify-center gap-2 ${
+                  isInWishlist(product.id) 
+                    ? 'border-red-500 text-red-500 hover:bg-red-50' 
+                    : 'border-gray-200 text-gray-700 hover:border-ink hover:text-ink'
                 }`}
-            >
-              {soldOut ? 'Sold Out' : (isAdded || inCart) ? (<><Check className="mr-2 h-5 w-5" /> Added to Cart</>) : 'Add to Cart'}
-            </button>
+              >
+                <Heart className={`w-5 h-5 ${isInWishlist(product.id) ? 'fill-red-500' : ''}`} />
+                {isInWishlist(product.id) ? 'Wishlisted' : 'Wishlist'}
+              </button>
+            </div>
 
             {detailImages.some(img => img.price != null) && (
               <div className="mt-8 pt-6 border-t border-gray-100">
