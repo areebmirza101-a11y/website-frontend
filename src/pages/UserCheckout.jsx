@@ -61,7 +61,7 @@ const UserCheckout = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen pt-16 pb-32">
-      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-black tracking-widest text-ink mb-12 uppercase text-center lg:text-left">Checkout</h1>
 
         {error && (

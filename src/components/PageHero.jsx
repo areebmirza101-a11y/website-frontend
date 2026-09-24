@@ -4,7 +4,7 @@ import { ChevronRight } from 'lucide-react';
 const PageHero = ({ title, breadcrumbs }) => {
   return (
     <div className="bg-secondary text-ink py-16 px-4 sm:px-6 lg:px-8 border-b border-gray-200">
-      <div className="max-w-[1536px] mx-auto">
+      <div className="w-[90%] max-w-[1920px] mx-auto">
         {breadcrumbs && breadcrumbs.length > 0 && (
           <nav className="flex justify-start items-center space-x-2 text-xs text-muted mb-6 font-semibold tracking-wider uppercase">
             {breadcrumbs.map((crumb, idx) => (

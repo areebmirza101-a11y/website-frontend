@@ -70,7 +70,7 @@ const UserHome = () => {
       <section className="relative h-[85vh] min-h-[600px] flex items-center overflow-hidden bg-white">
 
         
-        <div className="relative max-w-[1536px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full pt-16 pb-16 z-10">
+        <div className="relative w-[90%] max-w-[1920px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full pt-16 pb-16 z-10">
           {heroProducts.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 h-full items-center gap-8">
               {/* Text Column */}
@@ -164,7 +164,7 @@ const UserHome = () => {
 
       {/* Features Banner */}
       <section className="bg-[#F9F8F6] py-16 border-b border-gray-100">
-        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="group bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-[#BA9B74]/10">
               <div className="bg-[#F7F5F0] p-5 rounded-full text-[#BA9B74] mb-6 group-hover:scale-110 group-hover:-rotate-12 group-hover:bg-[#BA9B74] group-hover:text-white transition-all duration-500">
@@ -209,7 +209,7 @@ const UserHome = () => {
               <img src={assetUrl(saleBanner.banner_image_url)} alt="Sale Banner" className="w-full h-full object-cover opacity-30" />
             </div>
           )}
-          <div className="relative z-10 max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="relative z-10 w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
               {saleBanner.banner_title || saleBanner.name}
             </h2>
@@ -225,7 +225,7 @@ const UserHome = () => {
 
       {/* Categories */}
       <section className="py-24 bg-white">
-        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <span className="text-accent font-semibold tracking-[0.2em] text-xs uppercase">Collections</span>
             <h2 className="text-3xl font-bold tracking-tight text-ink mt-2 mb-2">Shop by Category</h2>
@@ -265,7 +265,7 @@ const UserHome = () => {
 
       {/* Featured */}
       <section className="py-24 bg-gray-50">
-        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
             <div>
               <span className="text-accent font-semibold tracking-[0.2em] text-xs uppercase">Curated</span>
@@ -303,7 +303,7 @@ const UserHome = () => {
 
       {/* Testimonials */}
       <section className="py-24 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-accent font-semibold tracking-[0.2em] text-xs uppercase">Reviews</span>
             <h2 className="text-3xl font-bold tracking-tight text-ink mt-2 mb-2">What Our Customers Say</h2>

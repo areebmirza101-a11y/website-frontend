@@ -123,7 +123,7 @@ const UserProductDetails = () => {
         })}
       </script>
 
-      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Link to="/products" className="inline-flex items-center text-sm text-gray-500 hover:text-ink transition-colors">
             <ArrowLeft className="h-4 w-4 mr-2" /> Back to Products

@@ -20,7 +20,7 @@ const UserWishlist = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-16">
-      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="flex items-center gap-4 mb-8">
           <Link to="/" className="text-gray-400 hover:text-accent transition-colors">
