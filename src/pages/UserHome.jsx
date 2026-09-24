@@ -78,7 +78,7 @@ const UserHome = () => {
                 <span className="inline-block bg-[#EBE7DF] text-[#A68A61] font-bold tracking-[0.05em] text-[11px] uppercase px-3 py-1.5 mb-6">
                   NEW ARRIVAL...
                 </span>
-                <h1 className="text-5xl sm:text-6xl lg:text-[5rem] font-bold tracking-tight text-[#2D2D2D] leading-[1.05] mb-6 whitespace-pre-line">
+                <h1 className="text-4xl sm:text-6xl lg:text-[5rem] font-bold tracking-tight text-[#2D2D2D] leading-[1.05] mb-6 whitespace-pre-line">
                   {heroTitle}
                 </h1>
                 <p className="text-[15px] text-[#7A7A7A] leading-[1.7] mb-10 max-w-[400px]">
@@ -103,7 +103,7 @@ const UserHome = () => {
               {/* Product Column */}
               <div className="relative h-full flex items-center justify-center mt-10 lg:mt-0">
                 
-                <div className="relative w-[380px] h-[380px] md:w-[500px] md:h-[500px] bg-[#E1D0BC] rounded-full overflow-hidden flex items-center justify-center z-10 shadow-xl">
+                <div className="relative w-72 h-72 sm:w-[380px] sm:h-[380px] md:w-[500px] md:h-[500px] bg-[#E1D0BC] rounded-full overflow-hidden flex items-center justify-center z-10 shadow-xl">
                   {heroProducts[currentHeroIdx].images && heroProducts[currentHeroIdx].images.length > 0 ? (
                     <img 
                       key={heroProducts[currentHeroIdx].id}
@@ -137,7 +137,7 @@ const UserHome = () => {
                 <span className="inline-block bg-[#EBE7DF] text-[#A68A61] font-bold tracking-[0.05em] text-[11px] uppercase px-3 py-1.5 mb-6">
                   NEW ARRIVAL...
                 </span>
-                <h1 className="text-5xl sm:text-6xl lg:text-[5rem] font-bold tracking-tight text-[#2D2D2D] leading-[1.05] mb-6 whitespace-pre-line">
+                <h1 className="text-4xl sm:text-6xl lg:text-[5rem] font-bold tracking-tight text-[#2D2D2D] leading-[1.05] mb-6 whitespace-pre-line">
                   {heroTitle}
                 </h1>
                 <p className="text-[15px] text-[#7A7A7A] leading-[1.7] mb-10 max-w-[400px]">
@@ -153,7 +153,7 @@ const UserHome = () => {
                 </div>
               </div>
               <div className="relative h-full flex items-center justify-center mt-10 lg:mt-0">
-                <div className="relative w-[380px] h-[380px] md:w-[500px] md:h-[500px] bg-[#E1D0BC] rounded-full overflow-hidden flex items-center justify-center z-10 shadow-xl">
+                <div className="relative w-72 h-72 sm:w-[380px] sm:h-[380px] md:w-[500px] md:h-[500px] bg-[#E1D0BC] rounded-full overflow-hidden flex items-center justify-center z-10 shadow-xl">
                   <img src={heroImage} alt="Hero" className="w-full h-full object-cover" />
                 </div>
               </div>
