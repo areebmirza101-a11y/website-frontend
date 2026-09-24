@@ -40,7 +40,7 @@ const AdminTestimonials = () => {
   if (loading) return <div className="p-8">Loading testimonials...</div>;
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-8 max-w-[1536px] mx-auto">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Manage Testimonials</h1>
         <button

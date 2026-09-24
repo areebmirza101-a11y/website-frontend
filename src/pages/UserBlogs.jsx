@@ -21,7 +21,7 @@ const UserBlogs = () => {
         title="Journal" 
         description="Read our latest thoughts, guides, and news about premium export apparel."
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-accent font-bold tracking-[0.2em] uppercase text-sm mb-4 block">Our Journal</span>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-ink tracking-tight uppercase mb-6">

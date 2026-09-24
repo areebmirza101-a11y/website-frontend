@@ -90,7 +90,7 @@ const UserProducts = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen pt-16 pb-32">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Editorial Header */}
         <div className="mb-16 border-b border-gray-200 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>

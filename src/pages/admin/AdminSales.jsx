@@ -140,7 +140,7 @@ const AdminSales = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-[1536px] mx-auto">
       <Seo title="Admin — Sales" />
       
       <div className="flex justify-between items-center mb-6">

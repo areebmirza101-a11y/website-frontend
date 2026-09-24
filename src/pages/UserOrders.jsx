@@ -28,7 +28,7 @@ const UserOrders = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen pt-12 pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold tracking-tight text-ink mb-10">My Orders</h1>
 
         {loading ? (

@@ -4,7 +4,7 @@ import { Truck, Globe, ShieldCheck, Leaf } from 'lucide-react';
 const About = () => {
   return (
     <div className="bg-white min-h-screen pt-12 pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-ink mb-4">About Velmoras Creation</h1>
           <p className="text-lg text-muted max-w-2xl mx-auto">

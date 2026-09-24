@@ -51,7 +51,7 @@ const AdminBlogs = () => {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-8 max-w-[1536px] mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-ink">Blogs</h1>
