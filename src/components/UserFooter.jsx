@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { settingsApi, categoryApi } from '../api';
 
 const UserFooter = () => {
-  const [logoUrl, setLogoUrl] = useState('/logo.jpg');
+  const [logoUrl, setLogoUrl] = useState('/logo.png');
   const [companyName, setCompanyName] = useState('Velmoras');
   const [socials, setSocials] = useState([]);
   const [categories, setCategories] = useState([]);

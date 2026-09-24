@@ -17,7 +17,7 @@ const UserNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [categories, setCategories] = useState([]);
-  const [logoUrl, setLogoUrl] = useState('/logo.jpg');
+  const [logoUrl, setLogoUrl] = useState('/logo.png');
   const [companyName, setCompanyName] = useState('Velmoras');
   const navigate = useNavigate();
 
