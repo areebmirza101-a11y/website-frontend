@@ -59,8 +59,10 @@ const UserHome = () => {
       await apiFetch('/contact', { method: 'POST', body: { ...inquiry, subject: 'Wholesale / Custom Orders Inquiry' } });
       setInquiryStatus('success');
       setInquiry({ name: '', email: '', message: '' });
+      import('react-hot-toast').then(({ default: toast }) => toast.success('Inquiry sent successfully!'));
     } catch(err) {
       setInquiryStatus('error');
+      import('react-hot-toast').then(({ default: toast }) => toast.error('Failed to send inquiry. Please try again.'));
     }
   };
 

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { productImage } from '../lib/format';
 
 const CartContext = createContext();
@@ -38,14 +39,19 @@ export const CartProvider = ({ children }) => {
     setCartItems((prev) => {
       const existing = prev.find((i) => i.key === key);
       if (existing) {
+        toast.success(`Updated quantity for ${product.name}`);
         return prev.map((i) => (i.key === key ? { ...i, quantity: i.quantity + quantity } : i));
       }
+      toast.success(`${product.name} added to cart!`);
       return [...prev, { ...item, quantity }];
     });
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (key) => setCartItems((prev) => prev.filter((i) => i.key !== key));
+  const removeFromCart = (key) => {
+    setCartItems((prev) => prev.filter((i) => i.key !== key));
+    toast.success('Item removed from cart');
+  };
 
   const updateQuantity = (key, quantity) => {
     if (quantity < 1) return removeFromCart(key);

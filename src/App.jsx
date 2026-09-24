@@ -6,6 +6,7 @@ import UserRoutes from './routes/UserRoutes';
 import AdminRoutes from './routes/AdminRoutes';
 import ScrollToTop from './components/ScrollToTop';
 
+import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { SalesProvider } from './context/SalesContext';
 
@@ -42,6 +43,7 @@ function App() {
   return (
     <>
       <ScrollToTop />
+      <Toaster position="bottom-right" toastOptions={{ className: 'font-sans font-medium', duration: 3000 }} />
       <Routes>
         <Route path="/admin/*" element={<AuthProvider key="admin"><AdminRoutes /></AuthProvider>} />
         <Route path="/*" element={<AuthProvider key="user"><SalesProvider><UserRoutes /></SalesProvider></AuthProvider>} />

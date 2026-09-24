@@ -20,8 +20,10 @@ const Contact = () => {
       await contactApi.create(form);
       setSent(true);
       setForm({ name: '', email: '', subject: '', message: '' });
+      import('react-hot-toast').then(({ default: toast }) => toast.success('Message sent successfully!'));
     } catch (err) {
       setError(err.message || 'Failed to send message');
+      import('react-hot-toast').then(({ default: toast }) => toast.error(err.message || 'Failed to send message'));
     } finally {
       setSubmitting(false);
     }
