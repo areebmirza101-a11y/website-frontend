@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteRule ^sitemap\.xml$ https://backendapi.velmorascreation.com/api/sitemap.xml [R=301,L]
+
+# Single Page Application routing (fallback to index.html)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [QSA,L]
