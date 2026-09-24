@@ -26,8 +26,8 @@ const UserFooter = () => {
   return (
     <footer className="bg-white border-t border-gray-100 pt-16 pb-8 mt-auto">
       <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 mb-12">
+          <div className="md:col-span-4 lg:col-span-4">
             {logoUrl ? (
               <img src={logoUrl} alt={companyName} className="h-10 w-auto object-contain mb-4 block" />
             ) : (
@@ -45,7 +45,7 @@ const UserFooter = () => {
             </div>
           </div>
 
-          <div>
+          <div className="md:col-span-2 lg:col-start-7 lg:col-span-2">
             <h4 className="font-semibold text-ink mb-4">Shop</h4>
             <ul className="space-y-3">
               <li><Link to="/products" className="text-gray-500 hover:text-accent text-sm transition-colors">All Products</Link></li>
@@ -57,7 +57,7 @@ const UserFooter = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="md:col-span-3 lg:col-span-2">
             <h4 className="font-semibold text-ink mb-4">Customer Care</h4>
             <ul className="space-y-3">
               <li><Link to="/size-guide" className="text-gray-500 hover:text-accent text-sm transition-colors">Size Guide</Link></li>
@@ -66,7 +66,7 @@ const UserFooter = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="md:col-span-3 lg:col-span-2">
             <h4 className="font-semibold text-ink mb-4">Legal</h4>
             <ul className="space-y-3">
               <li><Link to="/privacy" className="text-gray-500 hover:text-accent text-sm transition-colors">Privacy Policy</Link></li>
