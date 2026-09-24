@@ -56,7 +56,7 @@ const UserHome = () => {
     e.preventDefault();
     setInquiryStatus('sending');
     try {
-      await apiFetch('/contact', { method: 'POST', body: JSON.stringify({ ...inquiry, subject: 'Wholesale / Custom Orders Inquiry' }) });
+      await apiFetch('/contact', { method: 'POST', body: { ...inquiry, subject: 'Wholesale / Custom Orders Inquiry' } });
       setInquiryStatus('success');
       setInquiry({ name: '', email: '', message: '' });
     } catch(err) {
