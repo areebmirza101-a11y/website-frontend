@@ -14,6 +14,7 @@ const statusColor = {
 const payColor = {
   paid: 'bg-green-100 text-green-700',
   unpaid: 'bg-amber-100 text-amber-700',
+  pending: 'bg-amber-100 text-amber-700',
   refunded: 'bg-gray-100 text-gray-500',
 };
 
@@ -70,9 +71,13 @@ const AdminOrders = () => {
                     <td className="px-6 py-4 text-gray-900">{money(o.total)}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${payColor[o.payment_status]}`}>{o.payment_status}</span>
-                        {o.payment_status === 'unpaid' && (
-                          <button onClick={(e) => { e.stopPropagation(); markPaid(o.id); }} className="text-xs text-gray-500 hover:text-gray-900 underline">mark paid</button>
+                        <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${payColor[o.payment_status] || 'bg-gray-100 text-gray-700'}`}>
+                          {o.payment_status}
+                        </span>
+                        {o.payment_status !== 'paid' && (
+                          <button onClick={(e) => { e.stopPropagation(); markPaid(o.id); }} className="text-xs text-gray-500 hover:text-gray-900 underline">
+                            mark paid
+                          </button>
                         )}
                       </div>
                     </td>
@@ -80,7 +85,7 @@ const AdminOrders = () => {
                       <select
                         value={o.status}
                         onChange={(e) => changeStatus(o.id, e.target.value)}
-                        className={`text-xs px-2.5 py-1.5 rounded-full font-medium border-none outline-none cursor-pointer ${statusColor[o.status]}`}
+                        className={`text-xs px-2.5 py-1.5 rounded-full font-medium border-none outline-none cursor-pointer ${statusColor[o.status] || 'bg-gray-100 text-gray-700'}`}
                       >
                         {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
                       </select>
@@ -89,7 +94,7 @@ const AdminOrders = () => {
                   {expanded === o.id && (
                     <tr className="bg-gray-50">
                       <td colSpan={5} className="px-6 py-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                           <div>
                             <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">Items</h4>
                             <div className="space-y-1">
@@ -107,6 +112,16 @@ const AdminOrders = () => {
                             <p className="text-sm text-gray-700">{o.shipping_address}</p>
                             <p className="text-sm text-gray-700">{[o.shipping_city, o.shipping_zip, o.shipping_country].filter(Boolean).join(', ')}</p>
                             {o.phone && <p className="text-sm text-gray-500 mt-1">☎ {o.phone}</p>}
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">Payment Details</h4>
+                            <p className="text-sm text-gray-700 font-medium capitalize">Method: {o.payment_method || 'N/A'}</p>
+                            {o.paypal_order_id && (
+                              <p className="text-xs text-gray-500 mt-1">PayPal Order: <span className="font-mono">{o.paypal_order_id}</span></p>
+                            )}
+                            {o.paypal_capture_id && (
+                              <p className="text-xs text-gray-500 mt-1">Capture ID: <span className="font-mono">{o.paypal_capture_id}</span></p>
+                            )}
                           </div>
                         </div>
                       </td>

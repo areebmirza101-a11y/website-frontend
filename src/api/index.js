@@ -47,6 +47,8 @@ export const categoryApi = {
 
 export const orderApi = {
   checkout: (payload) => apiFetch('/orders/checkout', { method: 'POST', body: payload, auth: true }),
+  createPaypalOrder: (payload) => apiFetch('/orders/paypal/create-order', { method: 'POST', body: payload, auth: true }),
+  capturePaypalOrder: (payload) => apiFetch('/orders/paypal/capture-order', { method: 'POST', body: payload, auth: true }),
   listAll: () => apiFetch('/orders', { auth: true }),
   get: (id) => apiFetch(`/orders/${id}`, { auth: true }),
   updateStatus: (id, body) => apiFetch(`/orders/${id}/status`, { method: 'PATCH', body, auth: true }),

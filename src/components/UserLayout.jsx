@@ -3,6 +3,8 @@ import UserNavbar from './UserNavbar';
 import UserFooter from './UserFooter';
 import SalePopup from './SalePopup';
 import CartSidebar from './CartSidebar';
+import AIChatWidget from './AIChatWidget';
+
 const UserLayout = () => {
   return (
     <div className="flex flex-col min-h-screen relative overflow-x-hidden">
@@ -13,7 +15,7 @@ const UserLayout = () => {
         <Outlet />
       </main>
       <UserFooter />
-      {/* <AIChatWidget /> */}
+      <AIChatWidget />
     </div>
   );
 };
