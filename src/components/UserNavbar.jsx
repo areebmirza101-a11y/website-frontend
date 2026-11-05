@@ -41,7 +41,7 @@ const UserNavbar = () => {
   const safeCategories = Array.isArray(categories) ? categories : [];
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-40 border-b border-gray-200 transition-colors duration-300">
+    <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-[100] border-b border-gray-200 transition-colors duration-300">
       <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <Link to="/" className="flex-shrink-0 flex items-center gap-3">

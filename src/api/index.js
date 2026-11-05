@@ -50,7 +50,7 @@ export const orderApi = {
   createPaypalOrder: (payload) => apiFetch('/orders/paypal/create-order', { method: 'POST', body: payload, auth: true }),
   capturePaypalOrder: (payload) => apiFetch('/orders/paypal/capture-order', { method: 'POST', body: payload, auth: true }),
   listAll: () => apiFetch('/orders', { auth: true }),
-  get: (id) => apiFetch(`/orders/${id}`, { auth: true }),
+  get: (id) => apiFetch(`/orders/${id}`, { auth: true, skipErrorRedirect: true }),
   updateStatus: (id, body) => apiFetch(`/orders/${id}/status`, { method: 'PATCH', body, auth: true }),
 };
 

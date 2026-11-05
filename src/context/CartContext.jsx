@@ -36,21 +36,22 @@ export const CartProvider = ({ children }) => {
       color,
     };
 
-    setCartItems((prev) => {
-      const existing = prev.find((i) => i.key === key);
-      if (existing) {
-        toast.success(`Updated quantity for ${product.name}`);
-        return prev.map((i) => (i.key === key ? { ...i, quantity: i.quantity + quantity } : i));
-      }
-      toast.success(`${product.name} added to cart!`);
-      return [...prev, { ...item, quantity }];
-    });
+    const existing = cartItems.find((i) => i.key === key);
+    if (existing) {
+      toast.success(`Updated quantity for ${product.name}`, { id: `cart-${key}` });
+      setCartItems((prev) =>
+        prev.map((i) => (i.key === key ? { ...i, quantity: i.quantity + quantity } : i))
+      );
+    } else {
+      toast.success(`${product.name} added to cart!`, { id: `cart-${key}` });
+      setCartItems((prev) => [...prev, { ...item, quantity }]);
+    }
     setIsCartOpen(true);
   };
 
   const removeFromCart = (key) => {
     setCartItems((prev) => prev.filter((i) => i.key !== key));
-    toast.success('Item removed from cart');
+    toast.success('Item removed from cart', { id: 'cart-remove' });
   };
 
   const updateQuantity = (key, quantity) => {

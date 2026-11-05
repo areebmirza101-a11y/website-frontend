@@ -80,7 +80,7 @@ const UserCheckout = () => {
     'w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-accent focus:border-accent outline-none transition-colors';
 
   return (
-    <div className="bg-gray-50 min-h-screen pt-16 pb-32">
+    <div className="bg-gray-50 min-h-screen pt-28 pb-32 relative z-10">
       <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-black tracking-widest text-ink mb-12 uppercase text-center lg:text-left">
           Checkout
@@ -245,7 +245,6 @@ const UserCheckout = () => {
                             color: 'gold',
                             label: 'pay',
                           }}
-                          disabled={submitting}
                           onClick={(data, actions) => {
                             if (!validateForm()) {
                               return actions.reject();
@@ -254,7 +253,6 @@ const UserCheckout = () => {
                           }}
                           createOrder={async () => {
                             setError(null);
-                            setSubmitting(true);
                             try {
                               const payload = {
                                 customer: form,
@@ -271,11 +269,11 @@ const UserCheckout = () => {
                               return result.paypalOrderId;
                             } catch (err) {
                               setError(err.message || 'Failed to initialize PayPal order.');
-                              setSubmitting(false);
                               throw err;
                             }
                           }}
                           onApprove={async (data) => {
+                            setSubmitting(true);
                             try {
                               await orderApi.capturePaypalOrder({
                                 paypalOrderId: data.orderID,
