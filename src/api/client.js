@@ -54,9 +54,14 @@ export async function apiFetch(path, { method = 'GET', body, auth = false, heade
     err.status = res.status;
     err.data = data;
 
-    if (!skipErrorRedirect && globalNavigate && [401, 403, 404, 500].includes(res.status)) {
+    // Only redirect to login for unauthorized admin access.
+    // Never force-redirect the browser URL to /500 or /404 on API errors,
+    // so the customer is never trapped in error URL loops upon refresh.
+    if (!skipErrorRedirect && globalNavigate && (res.status === 401 || res.status === 403)) {
       const isAdmin = window.location.pathname.startsWith('/admin');
-      globalNavigate(`${isAdmin ? '/admin' : ''}/${res.status}`);
+      if (isAdmin && res.status === 401) {
+        globalNavigate('/admin/login');
+      }
     }
 
     throw err;

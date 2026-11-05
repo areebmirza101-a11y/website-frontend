@@ -23,7 +23,7 @@ const ServerError = ({ homePath = '/' }) => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => window.location.reload()}
+              onClick={() => { window.location.href = homePath; }}
               className="inline-flex items-center justify-center rounded-xl bg-ink px-8 py-4 text-sm font-bold text-white hover:bg-accent hover:shadow-lg hover:-translate-y-1 transition-all duration-300 uppercase tracking-widest gap-2"
             >
               <RefreshCw className="w-4 h-4" /> Try Again
