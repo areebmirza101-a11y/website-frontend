@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Truck, Globe, ShieldCheck, Leaf } from 'lucide-react';
+import Seo from '../components/Seo';
 
 const About = () => {
   return (
     <div className="bg-white min-h-screen pt-12 pb-24">
+      <Seo
+        title="About Us"
+        description="Learn about Velmoras Creation - premier handcrafted custom apparel & cosplay creators with worldwide export and tailoring expertise."
+        url="https://www.velmorascreation.com/about"
+      />
       <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-ink mb-4">About Velmoras Creation</h1>

@@ -1,9 +1,15 @@
 import PageHero from '../components/PageHero';
+import Seo from '../components/Seo';
 import { Scale, BookOpen, AlertTriangle, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 const TermsConditions = () => {
   return (
     <div className="bg-white min-h-screen pb-24">
+      <Seo
+        title="Terms & Conditions"
+        description="Terms of service, custom ordering conditions, user agreements, and purchase policies of Velmoras Creation."
+        url="https://www.velmorascreation.com/terms"
+      />
       <PageHero 
         title="Terms & Conditions" 
         breadcrumbs={[

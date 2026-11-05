@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Clock, Globe } from 'lucide-react';
 import { contactApi } from '../api';
 import PageHero from '../components/PageHero';
+import Seo from '../components/Seo';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
@@ -31,6 +32,11 @@ const Contact = () => {
 
   return (
     <div className="bg-white min-h-screen pb-24">
+      <Seo
+        title="Contact Us"
+        description="Get in touch with Velmoras Creation for custom orders, sizing inquiries, wholesale collaboration, and worldwide shipping support."
+        url="https://www.velmorascreation.com/contact"
+      />
       <PageHero 
         title="Contact Us" 
         breadcrumbs={[

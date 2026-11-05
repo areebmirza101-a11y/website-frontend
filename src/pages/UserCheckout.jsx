@@ -50,7 +50,9 @@ const UserCheckout = () => {
       };
       const result = await orderApi.checkout(payload);
       clearCart();
-      navigate(`/checkout/success?order=${result.orderId}`);
+      navigate(`/checkout/success?order=${result.orderId}`, {
+        state: { customerName: form.name, customerEmail: form.email },
+      });
     } catch (err) {
       setError(err.message || 'Checkout failed. Please try again.');
       setSubmitting(false);
@@ -280,7 +282,9 @@ const UserCheckout = () => {
                                 orderId: createdOrderIdRef.current,
                               });
                               clearCart();
-                              navigate(`/checkout/success?order=${createdOrderIdRef.current}`);
+                              navigate(`/checkout/success?order=${createdOrderIdRef.current}`, {
+                                state: { customerName: form.name, customerEmail: form.email },
+                              });
                             } catch (err) {
                               setError(err.message || 'Payment capture failed. Please contact support.');
                               setSubmitting(false);

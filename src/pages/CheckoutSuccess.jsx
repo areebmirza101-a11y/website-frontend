@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { useCart } from '../context/CartContext';
 import { orderApi } from '../api';
@@ -17,56 +17,59 @@ import {
   AlertCircle,
   Copy,
   Calendar,
-  Sparkles,
 } from 'lucide-react';
 
 const CheckoutSuccess = () => {
   const { clearCart } = useCart();
   const [params] = useSearchParams();
+  const location = useLocation();
   const orderId = params.get('order');
 
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(Boolean(orderId));
   const [copied, setCopied] = useState(false);
+  const titleRef = useRef(null);
 
-  // Side Confetti Cannons on order confirmation ("patakhy")
+  // Customer Name & Email available instantaneously via route state or API
+  const customerName = order?.customer_name || location.state?.customerName || '';
+  const customerEmail = order?.customer_email || location.state?.customerEmail || '';
+
+  // Confetti pop originating directly from the "Thank You" title upwards and to the sides
   useEffect(() => {
-    const end = Date.now() + 3.5 * 1000;
     const colors = ['#10b981', '#d4af37', '#233b6e', '#3b82f6', '#ec4899', '#f59e0b'];
 
-    // Center burst initially
-    confetti({
-      particleCount: 80,
-      spread: 100,
-      origin: { y: 0.6 },
-      colors,
-      zIndex: 9999,
-    });
+    const firePopFromTitle = () => {
+      let originX = 0.5;
+      let originY = 0.35;
 
-    // Side cannons loop
-    const frame = () => {
-      confetti({
-        particleCount: 4,
-        angle: 60,
-        spread: 60,
-        origin: { x: 0, y: 0.75 },
-        colors,
-        zIndex: 9999,
-      });
-      confetti({
-        particleCount: 4,
-        angle: 120,
-        spread: 60,
-        origin: { x: 1, y: 0.75 },
-        colors,
-        zIndex: 9999,
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
+      if (titleRef.current) {
+        const rect = titleRef.current.getBoundingClientRect();
+        originX = (rect.left + rect.width / 2) / window.innerWidth;
+        originY = (rect.top + rect.height / 2) / window.innerHeight;
       }
+
+      confetti({
+        particleCount: 50,
+        angle: 90, // shoots upwards
+        spread: 120, // spreads wide to both left and right sides
+        startVelocity: 35,
+        gravity: 0.9,
+        ticks: 140,
+        origin: { x: originX, y: originY },
+        colors,
+        zIndex: 9999,
+      });
     };
-    requestAnimationFrame(frame);
+
+    // Burst 1: Pop directly from title area
+    firePopFromTitle();
+
+    // Burst 2: 700ms later (2 times max), then finishes
+    const timer = setTimeout(() => {
+      firePopFromTitle();
+    }, 700);
+
+    return () => clearTimeout(timer);
   }, []);
 
   // Payment completed → empty the cart & fetch order details
@@ -166,14 +169,18 @@ const CheckoutSuccess = () => {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Thank You{order?.customer_name ? `, ${order.customer_name}` : ''}!
+          {/* Thank You with Person's Name & Confetti Origin Anchor */}
+          <h1
+            ref={titleRef}
+            className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight"
+          >
+            Thank You{customerName ? `, ${customerName}` : ''}!
           </h1>
 
           <p className="order-subtitle">
             Your order {orderId ? `(#${orderId}) ` : ''}has been received and is now being handcrafted & prepared by our creation team.
-            {order?.customer_email ? (
-              <> A full confirmation receipt has also been dispatched to <strong className="text-slate-800">{order.customer_email}</strong>.</>
+            {customerEmail ? (
+              <> A full confirmation receipt has also been dispatched to <strong className="text-slate-800">{customerEmail}</strong>.</>
             ) : (
               <> A confirmation receipt has been sent to your email.</>
             )}
@@ -329,10 +336,10 @@ const CheckoutSuccess = () => {
                   {order.paypal_capture_id && (
                     <p className="text-[11px] font-mono text-gray-500 mt-1">Capture ID: {order.paypal_capture_id}</p>
                   )}
-                  {order.customer_email && (
+                  {customerEmail && (
                     <p className="text-xs text-gray-600 mt-0.5 flex items-center gap-1.5">
                       <Mail className="w-3.5 h-3.5 text-gray-400" />
-                      <span>{order.customer_email}</span>
+                      <span>{customerEmail}</span>
                     </p>
                   )}
                 </div>

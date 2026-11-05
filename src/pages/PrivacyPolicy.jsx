@@ -1,9 +1,15 @@
 import PageHero from '../components/PageHero';
+import Seo from '../components/Seo';
 import { Shield, Lock, Eye, FileText, CheckCircle2 } from 'lucide-react';
 
 const PrivacyPolicy = () => {
   return (
     <div className="bg-white min-h-screen pb-24">
+      <Seo
+        title="Privacy Policy"
+        description="Learn how Velmoras Creation protects your personal data, payment information, and customer privacy."
+        url="https://www.velmorascreation.com/privacy"
+      />
       <PageHero 
         title="Privacy Policy" 
         breadcrumbs={[

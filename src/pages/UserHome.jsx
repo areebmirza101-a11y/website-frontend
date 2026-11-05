@@ -5,6 +5,7 @@ import ProductCard from '../components/ProductCard';
 import { productApi, categoryApi, settingsApi } from '../api';
 import { apiFetch, assetUrl } from '../api/client';
 import { useSales } from '../context/SalesContext';
+import Seo from '../components/Seo';
 
 const heroImg = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=2000&h=1000&fit=crop';
 const catImg = {
@@ -68,6 +69,12 @@ const UserHome = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Seo
+        title={settings?.company_name ? `${settings.company_name} — ${settings.tagline || 'Custom Cosplay & Cinema Costumes'}` : 'Custom Cosplay & Cinema Outfits'}
+        description={settings?.hero_subtitle || 'Discover handcrafted custom-made cosplay costumes, replica cinema outfits, tunics, robes & bespoke tailoring with worldwide express shipping.'}
+        keywords="cosplay costumes, custom cosplay, star wars costume, kylo ren outfit, bespoke costumes, cinema suits, handcrafted outfits, Velmoras Creation"
+        url="https://www.velmorascreation.com/"
+      />
       {/* Hero */}
       <section className="relative min-h-screen lg:min-h-[600px] lg:h-[85vh] flex items-center overflow-hidden bg-white pt-24 pb-12 lg:py-0">
         <div className="relative w-[90%] max-w-[1920px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full z-10">

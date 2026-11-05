@@ -18,8 +18,9 @@ const UserBlogs = () => {
   return (
     <div className="bg-white min-h-screen pt-12 pb-24">
       <Seo 
-        title="Journal" 
-        description="Read our latest thoughts, guides, and news about premium export apparel."
+        title="Journal & Blog" 
+        description="Explore expert guides, cosplay crafting tutorials, costume insights, and cinema tailoring stories from Velmoras Creation."
+        url="https://www.velmorascreation.com/blogs"
       />
       <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">

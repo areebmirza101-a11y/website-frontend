@@ -4,6 +4,7 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { productApi, categoryApi } from '../api';
 import { useSales } from '../context/SalesContext';
+import Seo from '../components/Seo';
 
 const UserProducts = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -90,6 +91,22 @@ const UserProducts = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen pt-16 pb-32">
+      <Seo
+        title={
+          searchParam
+            ? `Search: "${searchParam}"`
+            : onSaleParam
+            ? 'Special Deals & Sale'
+            : categories.find((c) => c.slug === categoryParam)?.name || 'All Products & Custom Costumes'
+        }
+        description={
+          categories.find((c) => c.slug === categoryParam)
+            ? `Explore handcrafted ${categories.find((c) => c.slug === categoryParam).name} custom cosplay costumes and replica apparel at Velmoras Creation.`
+            : 'Browse our complete catalog of movie-accurate custom cosplay costumes, cinema replicas, and bespoke tailored apparel.'
+        }
+        keywords="cosplay costumes, custom cosplay, movie suits, replica apparel, Velmoras"
+        url={window.location.href}
+      />
       <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Editorial Header */}
         <div className="mb-16 border-b border-gray-200 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">

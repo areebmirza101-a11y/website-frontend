@@ -1,9 +1,15 @@
 import PageHero from '../components/PageHero';
+import Seo from '../components/Seo';
 import { Truck, Clock, Globe2, PackageCheck, AlertCircle } from 'lucide-react';
 
 const ShippingPolicy = () => {
   return (
     <div className="bg-white min-h-screen pb-24">
+      <Seo
+        title="Shipping Policy"
+        description="Velmoras Creation shipping policy: express delivery worldwide, production timelines, international tracking, and secure dispatch."
+        url="https://www.velmorascreation.com/shipping"
+      />
       <PageHero 
         title="Shipping Policy" 
         breadcrumbs={[

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import PageHero from '../components/PageHero';
 import { Ruler, Info } from 'lucide-react';
 import { sizeGuideApi } from '../api';
+import Seo from '../components/Seo';
 
 const SizeGuide = () => {
   const [guides, setGuides] = useState([]);
@@ -24,6 +25,11 @@ const SizeGuide = () => {
 
   return (
     <div className="bg-white min-h-screen pb-24">
+      <Seo
+        title="Size Guide"
+        description="Comprehensive sizing chart and measurement guide for Velmoras Creation custom cosplay costumes, cinema replicas, and bespoke tailored fits."
+        url="https://www.velmorascreation.com/size-guide"
+      />
       <PageHero 
         title="Size Guide" 
         breadcrumbs={[

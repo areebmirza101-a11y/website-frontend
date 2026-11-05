@@ -116,7 +116,7 @@ const UserProductDetails = () => {
           "offers": {
             "@type": "Offer",
             "url": window.location.href,
-            "priceCurrency": "PKR",
+            "priceCurrency": "USD",
             "price": displayPrice,
             "availability": soldOut ? "https://schema.org/OutOfStock" : "https://schema.org/InStock"
           }

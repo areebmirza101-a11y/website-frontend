@@ -1,9 +1,15 @@
 import PageHero from '../components/PageHero';
+import Seo from '../components/Seo';
 import { RefreshCcw, HandCoins, ArrowRightLeft, MessageCircleQuestion } from 'lucide-react';
 
 const ReturnRefund = () => {
   return (
     <div className="bg-white min-h-screen pb-24">
+      <Seo
+        title="Returns & Refund Policy"
+        description="Our returns, replacements, and refund guidelines for bespoke custom costumes and apparel at Velmoras Creation."
+        url="https://www.velmorascreation.com/returns"
+      />
       <PageHero 
         title="Returns & Refunds" 
         breadcrumbs={[
