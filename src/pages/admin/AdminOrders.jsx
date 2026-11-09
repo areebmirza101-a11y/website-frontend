@@ -1,9 +1,10 @@
 import toast from 'react-hot-toast';
 import { useEffect, useState, Fragment } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Trash2 } from 'lucide-react';
 import { orderApi } from '../../api';
 import { money } from '../../lib/format';
 import { useAdminTitle } from '../../components/admin/useAdminTitle';
+import { confirmAction } from '../../utils/confirmToast';
 
 const STATUSES = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
 const statusColor = {
@@ -43,6 +44,18 @@ const AdminOrders = () => {
     toast.success(`Order #${id} payment marked as paid`);
   };
 
+  const deleteOrder = (id) => {
+    confirmAction(`Delete Order #${id}? This will remove the order permanently and cannot be undone.`, async () => {
+      try {
+        await orderApi.delete(id);
+        setOrders((prev) => prev.filter((o) => o.id !== id));
+        toast.success(`Order #${id} deleted successfully`);
+      } catch (err) {
+        toast.error(err.message || 'Failed to delete order');
+      }
+    });
+  };
+
   useAdminTitle('Orders');
 
   if (loading) return <div className="text-gray-400">Loading orders…</div>;
@@ -61,6 +74,7 @@ const AdminOrders = () => {
                 <th className="text-left font-medium px-6 py-4">Total</th>
                 <th className="text-left font-medium px-6 py-4">Payment</th>
                 <th className="text-left font-medium px-6 py-4">Status</th>
+                <th className="text-right font-medium px-6 py-4">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -102,10 +116,19 @@ const AdminOrders = () => {
                         <ChevronDown className="h-3.5 w-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-60" />
                       </div>
                     </td>
+                    <td className="px-6 py-4 text-right" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        onClick={() => deleteOrder(o.id)}
+                        title="Delete Order"
+                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors inline-flex items-center justify-center"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </td>
                   </tr>
                   {expanded === o.id && (
                     <tr className="bg-gray-50">
-                      <td colSpan={5} className="px-6 py-4">
+                      <td colSpan={6} className="px-6 py-4">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                           <div>
                             <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">Items</h4>

@@ -55,6 +55,8 @@ export const orderApi = {
   listMine: () => apiFetch('/orders/mine', { auth: true }),
   get: (id) => apiFetch(`/orders/${id}`, { auth: true, skipErrorRedirect: true }),
   updateStatus: (id, body) => apiFetch(`/orders/${id}/status`, { method: 'PATCH', body, auth: true }),
+  delete: (id) => apiFetch(`/orders/${id}`, { method: 'DELETE', auth: true }),
+  remove: (id) => apiFetch(`/orders/${id}`, { method: 'DELETE', auth: true }),
 };
 
 export const adminApi = {
