@@ -7,5 +7,5 @@ Disallow: /profile
 Disallow: /orders
 
 # Sitemap
-Sitemap: https://www.velmorascreation.com/sitemap.xml
-Sitemap: https://www.velmorascreation.com/api/sitemap.xml
+Sitemap: https://velmorascreation.com/sitemap.xml
+Sitemap: https://backendapi.velmorascreation.com/api/sitemap.xml
