@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Calendar, ChevronDown } from 'lucide-react';
+import { Calendar, ChevronDown, ArrowRight } from 'lucide-react';
 
 // Local YYYY-MM-DD
 const ymd = (d) =>
@@ -96,7 +96,7 @@ export default function DateRangePicker({ value, onChange }) {
                 onChange={(e) => setCustomStart(e.target.value)}
                 className="w-full rounded-lg border border-gray-200 px-2 py-1.5 text-xs outline-none focus:border-indigo-500"
               />
-              <span className="text-gray-400">→</span>
+              <ArrowRight className="h-3.5 w-3.5 text-gray-400 shrink-0" />
               <input
                 type="date"
                 max={today}

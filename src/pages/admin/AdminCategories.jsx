@@ -73,7 +73,20 @@ const AdminCategories = () => {
                   <td className="px-6 py-4">
                     {c.bg_image ? (
                       <div className="h-10 w-10 rounded-lg overflow-hidden border border-gray-200">
-                        <img src={assetUrl(c.bg_image)} alt="" className="h-full w-full object-cover" />
+                        <img
+                        src={assetUrl(c.bg_image)}
+                        alt={c.name}
+                        className="h-full w-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          if (e.currentTarget.nextSibling) {
+                            e.currentTarget.nextSibling.style.display = 'flex';
+                          }
+                        }}
+                      />
+                      <div style={{ display: 'none' }} className="h-full w-full items-center justify-center bg-gray-100 text-gray-400 text-[10px] font-semibold">
+                        IMG
+                      </div>
                       </div>
                     ) : (
                       <div className="h-10 w-10 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center">

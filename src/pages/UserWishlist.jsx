@@ -56,7 +56,7 @@ const UserWishlist = () => {
               const targetUrl = `/products/${product.slug || product.id}`;
 
               return (
-                <div key={product.id} className="group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent/20 border border-gray-200 shadow-sm relative">
+                <div key={product.id} className="group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-accent/20 border border-gray-200 shadow-sm relative">
                   
                   {/* Remove Button */}
                   <button 
@@ -72,7 +72,7 @@ const UserWishlist = () => {
                     <img
                       src={displayImage}
                       alt={product.name}
-                      className="w-full h-full object-contain mix-blend-multiply transition-all duration-1000 group-hover:scale-110 group-hover:rotate-1"
+                      className="w-full h-full object-contain mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                     />
                     
                     {saleInfo && !soldOut && (

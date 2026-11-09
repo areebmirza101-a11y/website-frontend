@@ -151,7 +151,7 @@ const CheckoutSuccess = () => {
   const estimatedDeliveryText = `${formatEst(estStart)} – ${formatEst(estEnd)}`;
 
   return (
-    <div className="bg-gray-50 min-h-screen pt-28 pb-16 px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="bg-gray-50 min-h-screen pt-24 sm:pt-28 pb-16 px-3 sm:px-6 lg:px-8 relative z-10 overflow-x-hidden">
       <div className="max-w-4xl mx-auto">
         
         {/* ============================================================
@@ -160,11 +160,11 @@ const CheckoutSuccess = () => {
         <div className="order-success-hero">
           {/* Animated Checkmark with Rotating Aura */}
           <div className="success-icon-wrapper">
-            <Check className="w-10 h-10 text-white stroke-[3]" />
+            <Check className="w-8 h-8 sm:w-10 sm:h-10 text-white stroke-[3]" />
           </div>
 
           <div>
-            <span className="inline-block bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-4 py-1.5 mb-3 text-xs font-black tracking-widest uppercase rounded-full shadow-xs">
+            <span className="inline-block bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-3.5 py-1 mb-2.5 sm:mb-3 text-[11px] sm:text-xs font-black tracking-widest uppercase rounded-full shadow-xs">
               ORDER CONFIRMED
             </span>
           </div>
@@ -172,7 +172,7 @@ const CheckoutSuccess = () => {
           {/* Thank You with Person's Name & Confetti Origin Anchor */}
           <h1
             ref={titleRef}
-            className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight"
+            className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight break-words px-2"
           >
             Thank You{customerName ? `, ${customerName}` : ''}!
           </h1>
@@ -180,7 +180,7 @@ const CheckoutSuccess = () => {
           <p className="order-subtitle">
             Your order {orderId ? `(#${orderId}) ` : ''}has been received and is now being handcrafted & prepared by our creation team.
             {customerEmail ? (
-              <> A full confirmation receipt has also been dispatched to <strong className="text-slate-800">{customerEmail}</strong>.</>
+              <> A full confirmation receipt has also been dispatched to <strong className="text-slate-800 break-all">{customerEmail}</strong>.</>
             ) : (
               <> A confirmation receipt has been sent to your email.</>
             )}
@@ -188,20 +188,20 @@ const CheckoutSuccess = () => {
 
           {/* Reference pill, copy button & Date */}
           {orderId && (
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-              <div className="inline-flex items-center gap-2 bg-white border border-gray-200/80 px-4 py-2 rounded-2xl shadow-xs text-xs font-semibold text-slate-700">
-                <span className="font-black text-slate-900">📄 Order Ref: #{orderId}</span>
+            <div className="mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-2">
+              <div className="inline-flex flex-wrap items-center justify-center gap-1.5 sm:gap-2.5 bg-white border border-gray-200/80 px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xs text-[11px] sm:text-xs font-semibold text-slate-700">
+                <span className="font-black text-slate-900">📄 Ref: #{orderId}</span>
                 <button
                   onClick={handleCopyRef}
-                  className="inline-flex items-center gap-1 text-accent hover:text-accent-hover font-bold hover:underline transition-colors"
+                  className="inline-flex items-center gap-1 text-accent hover:text-accent-hover font-bold hover:underline transition-colors ml-1"
                   title="Copy reference number"
                 >
                   <Copy className="w-3.5 h-3.5" />
                   <span>{copied ? 'Copied!' : 'Copy'}</span>
                 </button>
-                <span className="text-gray-300">•</span>
-                <span className="flex items-center gap-1 text-slate-500">
-                  <Calendar className="w-3.5 h-3.5" />
+                <span className="text-gray-300 hidden sm:inline">•</span>
+                <span className="flex items-center gap-1 text-slate-500 w-full sm:w-auto justify-center mt-0.5 sm:mt-0 text-[10px] sm:text-xs">
+                  <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   <span>{formattedDate}</span>
                 </span>
               </div>
@@ -209,16 +209,16 @@ const CheckoutSuccess = () => {
           )}
 
           {/* Estimated Delivery Pill */}
-          <div className="mt-3">
-            <span className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-xs">
-              <Truck className="w-4 h-4 text-emerald-600" />
+          <div className="mt-2.5 sm:mt-3">
+            <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wide shadow-xs">
+              <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 shrink-0" />
               <span>Estimated Delivery: {estimatedDeliveryText}</span>
             </span>
           </div>
 
           {/* Cancelled Alert if applicable */}
           {rawStatus === 'cancelled' && (
-            <div className="mt-6 max-w-md mx-auto p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center justify-center gap-2">
+            <div className="mt-4 sm:mt-6 max-w-md mx-auto p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center justify-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>This order has been cancelled by customer support or merchant.</span>
             </div>
@@ -229,7 +229,7 @@ const CheckoutSuccess = () => {
             {/* Step 1: Order Placed */}
             <div className={`stepper-step ${s1Class}`}>
               <div className="stepper-circle">
-                <Check className="w-4 h-4 text-white stroke-[3]" />
+                <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white stroke-[3]" />
               </div>
               <span className="stepper-label">Order Placed</span>
             </div>
@@ -238,9 +238,9 @@ const CheckoutSuccess = () => {
             <div className={`stepper-step ${s2Class}`}>
               <div className="stepper-circle">
                 {isStep2Done ? (
-                  <Check className="w-4 h-4 text-white stroke-[3]" />
+                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white stroke-[3]" />
                 ) : (
-                  <Package className="w-4 h-4" />
+                  <Package className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 )}
               </div>
               <span className="stepper-label">Processing</span>
@@ -250,9 +250,9 @@ const CheckoutSuccess = () => {
             <div className={`stepper-step ${s3Class}`}>
               <div className="stepper-circle">
                 {isStep3Done ? (
-                  <Check className="w-4 h-4 text-white stroke-[3]" />
+                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white stroke-[3]" />
                 ) : (
-                  <Truck className="w-4 h-4" />
+                  <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 )}
               </div>
               <span className="stepper-label">Shipped</span>
@@ -262,9 +262,9 @@ const CheckoutSuccess = () => {
             <div className={`stepper-step ${s4Class}`}>
               <div className="stepper-circle">
                 {isStep4Done ? (
-                  <CheckCheck className="w-4 h-4 text-white stroke-[3]" />
+                  <CheckCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white stroke-[3]" />
                 ) : (
-                  <Home className="w-4 h-4" />
+                  <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 )}
               </div>
               <span className="stepper-label">Delivered</span>
@@ -276,18 +276,18 @@ const CheckoutSuccess = () => {
             ORDER DETAILS & SUMMARY BREAKDOWN
             ============================================================ */}
         {order && (
-          <div className="bg-white rounded-3xl border border-gray-200/80 shadow-sm p-6 sm:p-10 mb-8 space-y-8">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
+          <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-200/80 shadow-sm p-4 sm:p-10 mb-8 space-y-6 sm:space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-4 sm:pb-6 border-b border-gray-100">
               <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-gray-400">Reference Number</span>
-                <p className="text-xl font-black text-ink">#{order.id}</p>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-400">Reference Number</span>
+                <p className="text-lg sm:text-xl font-black text-ink">#{order.id}</p>
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="text-right">
-                  <span className="text-xs font-bold uppercase tracking-widest text-gray-400 block">Payment</span>
+                <div className="text-left sm:text-right">
+                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-400 block">Payment</span>
                   <span
-                    className={`inline-block text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider ${
+                    className={`inline-block text-[10px] sm:text-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full font-bold uppercase tracking-wider ${
                       order.payment_status === 'paid'
                         ? 'bg-emerald-100 text-emerald-800'
                         : 'bg-amber-100 text-amber-800'
@@ -297,9 +297,9 @@ const CheckoutSuccess = () => {
                   </span>
                 </div>
 
-                <div className="text-right pl-4 border-l border-gray-100">
-                  <span className="text-xs font-bold uppercase tracking-widest text-gray-400 block">Status</span>
-                  <span className="inline-block text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider bg-slate-100 text-slate-800">
+                <div className="text-left sm:text-right pl-3 sm:pl-4 border-l border-gray-100">
+                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-400 block">Status</span>
+                  <span className="inline-block text-[10px] sm:text-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full font-bold uppercase tracking-wider bg-slate-100 text-slate-800">
                     {order.status || 'pending'}
                   </span>
                 </div>
@@ -307,17 +307,17 @@ const CheckoutSuccess = () => {
             </div>
 
             {/* Delivery & Customer Info */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50/70 p-6 rounded-2xl border border-gray-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 bg-gray-50/70 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-100">
               <div className="flex items-start gap-3">
-                <div className="p-2.5 rounded-xl bg-white border border-gray-200/60 shadow-xs text-accent">
-                  <MapPin className="w-5 h-5" />
+                <div className="p-2 sm:p-2.5 rounded-xl bg-white border border-gray-200/60 shadow-xs text-accent shrink-0">
+                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <div>
-                  <h4 className="text-xs font-black uppercase tracking-wider text-gray-500 mb-1">Shipping Address</h4>
-                  <p className="text-sm font-bold text-slate-800">{order.customer_name}</p>
-                  <p className="text-xs text-gray-600 mt-0.5">{order.shipping_address}</p>
+                <div className="min-w-0">
+                  <h4 className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-gray-500 mb-0.5 sm:mb-1">Shipping Address</h4>
+                  <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">{order.customer_name}</p>
+                  <p className="text-[11px] sm:text-xs text-gray-600 mt-0.5 break-words">{order.shipping_address}</p>
                   {(order.shipping_city || order.shipping_country) && (
-                    <p className="text-xs text-gray-600">
+                    <p className="text-[11px] sm:text-xs text-gray-600">
                       {[order.shipping_city, order.shipping_country, order.shipping_zip].filter(Boolean).join(', ')}
                     </p>
                   )}
@@ -325,20 +325,20 @@ const CheckoutSuccess = () => {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="p-2.5 rounded-xl bg-white border border-gray-200/60 shadow-xs text-accent">
-                  <CreditCard className="w-5 h-5" />
+                <div className="p-2 sm:p-2.5 rounded-xl bg-white border border-gray-200/60 shadow-xs text-accent shrink-0">
+                  <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <div>
-                  <h4 className="text-xs font-black uppercase tracking-wider text-gray-500 mb-1">Payment Method</h4>
-                  <p className="text-sm font-bold text-slate-800">
+                <div className="min-w-0">
+                  <h4 className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-gray-500 mb-0.5 sm:mb-1">Payment Method</h4>
+                  <p className="text-xs sm:text-sm font-bold text-slate-800">
                     {order.payment_method === 'paypal' ? 'PayPal / Card Gateway' : 'Manual / Offline Arrangement'}
                   </p>
                   {order.paypal_capture_id && (
-                    <p className="text-[11px] font-mono text-gray-500 mt-1">Capture ID: {order.paypal_capture_id}</p>
+                    <p className="text-[10px] sm:text-[11px] font-mono text-gray-500 mt-1 break-all">Capture ID: {order.paypal_capture_id}</p>
                   )}
                   {customerEmail && (
-                    <p className="text-xs text-gray-600 mt-0.5 flex items-center gap-1.5">
-                      <Mail className="w-3.5 h-3.5 text-gray-400" />
+                    <p className="text-[11px] sm:text-xs text-gray-600 mt-0.5 flex items-center gap-1.5 break-all">
+                      <Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400 shrink-0" />
                       <span>{customerEmail}</span>
                     </p>
                   )}
@@ -349,24 +349,24 @@ const CheckoutSuccess = () => {
             {/* Ordered Items List */}
             {order.items && order.items.length > 0 && (
               <div>
-                <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-4 flex items-center gap-2">
+                <h3 className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-gray-400 mb-3 sm:mb-4 flex items-center gap-2">
                   <Package className="w-4 h-4" />
                   <span>Items Ordered ({order.items.length})</span>
                 </h3>
-                <div className="divide-y divide-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
+                <div className="divide-y divide-gray-100 border border-gray-100 rounded-xl sm:rounded-2xl overflow-hidden">
                   {order.items.map((item, idx) => (
-                    <div key={idx} className="p-4 flex items-center justify-between gap-4 hover:bg-gray-50/50 transition-colors">
-                      <div className="flex-1">
-                        <p className="text-sm font-black text-slate-800">{item.product_name || `Product #${item.product_id}`}</p>
-                        <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5">
+                    <div key={idx} className="p-3 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 hover:bg-gray-50/50 transition-colors">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs sm:text-sm font-black text-slate-800 break-words">{item.product_name || `Product #${item.product_id}`}</p>
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] sm:text-xs text-gray-500 mt-0.5">
                           {item.size && <span>Size: <strong>{item.size}</strong></span>}
                           {item.color && <span>Color: <strong>{item.color}</strong></span>}
                           <span>Qty: <strong>{item.quantity}</strong></span>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm font-black text-ink">{money(item.price * item.quantity)}</p>
-                        <p className="text-[11px] text-gray-400">{money(item.price)} each</p>
+                      <div className="text-right shrink-0">
+                        <p className="text-xs sm:text-sm font-black text-ink">{money(item.price * item.quantity)}</p>
+                        <p className="text-[10px] sm:text-[11px] text-gray-400">{money(item.price)} each</p>
                       </div>
                     </div>
                   ))}
@@ -375,18 +375,18 @@ const CheckoutSuccess = () => {
             )}
 
             {/* Total Footer */}
-            <div className="flex items-center justify-between pt-4 border-t border-gray-100 text-sm">
+            <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-100 text-xs sm:text-sm">
               <span className="font-black text-gray-600 uppercase tracking-wider">Total Paid</span>
-              <span className="text-2xl font-black text-slate-900">{money(order.total)}</span>
+              <span className="text-xl sm:text-2xl font-black text-slate-900">{money(order.total)}</span>
             </div>
           </div>
         )}
 
         {/* Action Controls */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
           <Link
             to="/products"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-ink text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-accent hover:shadow-xl transition-all shadow-md active:scale-95"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-ink text-white px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-accent hover:shadow-xl transition-all shadow-md active:scale-95"
           >
             <span>Continue Shopping</span>
             <ArrowRight className="w-4 h-4" />
@@ -394,7 +394,7 @@ const CheckoutSuccess = () => {
 
           <Link
             to="/contact"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-slate-700 border border-gray-200/80 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-50 transition-all shadow-xs"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-slate-700 border border-gray-200/80 px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-50 transition-all shadow-xs"
           >
             <span>Need Help? Contact Us</span>
           </Link>

@@ -6,6 +6,8 @@ export const authApi = {
   register: (name, email, password) =>
     apiFetch('/auth/register', { method: 'POST', body: { name, email, password }, skipErrorRedirect: true }),
   me: () => apiFetch('/auth/me', { auth: true, skipErrorRedirect: true }),
+  updateProfile: (data) =>
+    apiFetch('/auth/profile', { method: 'PUT', body: data, auth: true }),
   changePassword: (current_password, new_password) =>
     apiFetch('/auth/change-password', { method: 'POST', body: { current_password, new_password }, auth: true, skipErrorRedirect: true }),
 };
@@ -50,6 +52,7 @@ export const orderApi = {
   createPaypalOrder: (payload) => apiFetch('/orders/paypal/create-order', { method: 'POST', body: payload, auth: true }),
   capturePaypalOrder: (payload) => apiFetch('/orders/paypal/capture-order', { method: 'POST', body: payload, auth: true }),
   listAll: () => apiFetch('/orders', { auth: true }),
+  listMine: () => apiFetch('/orders/mine', { auth: true }),
   get: (id) => apiFetch(`/orders/${id}`, { auth: true, skipErrorRedirect: true }),
   updateStatus: (id, body) => apiFetch(`/orders/${id}/status`, { method: 'PATCH', body, auth: true }),
 };
@@ -80,6 +83,9 @@ export const contactApi = {
   create: (body) => apiFetch('/contact', { method: 'POST', body }),
   list: () => apiFetch('/contact', { auth: true }),
   markRead: (id) => apiFetch(`/contact/${id}/read`, { method: 'PATCH', auth: true }),
+  toggleRead: (id, read) => apiFetch(`/contact/${id}/read`, { method: 'PATCH', body: { read }, auth: true }),
+  remove: (id) => apiFetch(`/contact/${id}`, { method: 'DELETE', auth: true }),
+  reply: (id, body) => apiFetch(`/contact/${id}/reply`, { method: 'POST', body, auth: true }),
 };
 
 export const chatApi = {
@@ -95,4 +101,26 @@ export const adminSizeGuideApi = {
   create: (body) => apiFetch('/admin/size-guides', { method: 'POST', body, auth: true }),
   update: (id, body) => apiFetch(`/admin/size-guides/${id}`, { method: 'PUT', body, auth: true }),
   remove: (id) => apiFetch(`/admin/size-guides/${id}`, { method: 'DELETE', auth: true }),
+};
+
+export const letterboxApi = {
+  getRecipients: () => apiFetch('/admin/letterbox/recipients', { auth: true }),
+  sendBroadcast: (body) => apiFetch('/admin/letterbox/send', { method: 'POST', body, auth: true }),
+};
+
+export const couponApi = {
+  validate: (code, subtotal) => apiFetch('/coupons/validate', { method: 'POST', body: { code, subtotal } }),
+};
+
+export const adminCouponApi = {
+  list: () => apiFetch('/coupons/admin', { auth: true }),
+  create: (body) => apiFetch('/coupons/admin', { method: 'POST', body, auth: true }),
+  update: (id, body) => apiFetch(`/coupons/admin/${id}`, { method: 'PUT', body, auth: true }),
+  toggle: (id) => apiFetch(`/coupons/admin/${id}/toggle`, { method: 'PATCH', auth: true }),
+  delete: (id) => apiFetch(`/coupons/admin/${id}`, { method: 'DELETE', auth: true }),
+};
+
+export const newsletterApi = {
+  subscribe: (email) => apiFetch('/newsletter/subscribe', { method: 'POST', body: { email } }),
+  listSubscribers: () => apiFetch('/newsletter/subscribers', { auth: true }),
 };

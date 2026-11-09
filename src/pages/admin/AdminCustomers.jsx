@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Users, ArrowLeft, Mail, Package, ShoppingBag, Calendar, Trash2, AlertTriangle } from 'lucide-react';
 import { adminApi } from '../../api';
 import { money } from '../../lib/format';

@@ -1,13 +1,14 @@
+import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { ArrowLeft, X, Upload, Star } from 'lucide-react';
+import { ArrowLeft, X, Upload, Star, Plus, Trash2 } from 'lucide-react';
 import { productApi, categoryApi, adminSizeGuideApi } from '../../api';
 import { assetUrl } from '../../api/client';
 import { useAdminTitle } from '../../components/admin/useAdminTitle';
 
 const empty = {
   name: '', description: '', price: '', sku: '', material: '',
-  sizes: '', colors: '', stock: 0, main_category_id: '', sub_category_id: '', featured: false, show_in_hero: false, active: true, size_guide_id: ''
+  sizes: '', colors: '', stock: 0, main_category_id: '', sub_category_id: '', featured: false, show_in_hero: false, active: true, size_guide_id: '', faqs: []
 };
 
 const ProductForm = () => {
@@ -63,11 +64,13 @@ const ProductForm = () => {
             featured: !!p?.featured,
             show_in_hero: !!p?.show_in_hero,
             active: !!p?.active,
-            size_guide_id: p?.size_guide_id || ''
+            size_guide_id: p?.size_guide_id || '',
+            faqs: Array.isArray(p?.faqs) ? p.faqs : []
           });
           setExistingImages(p?.images || []);
           const main = (p?.images || []).find((i) => i.is_main);
           if (main) setMainImagePreview(assetUrl(main.url));
+    toast.success('Main image updated');
         }).catch(err => {
           console.error('Error fetching product:', err);
           setError('Failed to load product data: ' + err.message);
@@ -109,6 +112,7 @@ const ProductForm = () => {
   const removeExistingImage = async (imageId) => {
     await productApi.removeImage(imageId);
     setExistingImages((prev) => prev.filter((i) => i.id !== imageId));
+    toast.success('Image removed');
     setMainImagePreview(null);
   };
 
@@ -119,6 +123,25 @@ const ProductForm = () => {
     );
     const main = existingImages.find((i) => i.id === imageId);
     if (main) setMainImagePreview(assetUrl(main.url));
+  };
+
+  const handleAddFaq = () => {
+    setForm((f) => ({
+      ...f,
+      faqs: [...(f.faqs || []), { question: '', answer: '' }],
+    }));
+  };
+
+  const handleUpdateFaq = (index, field, value) => {
+    const updated = [...(form.faqs || [])];
+    updated[index] = { ...updated[index], [field]: value };
+    setForm((f) => ({ ...f, faqs: updated }));
+  };
+
+  const handleRemoveFaq = (index) => {
+    const updated = [...(form.faqs || [])];
+    updated.splice(index, 1);
+    setForm((f) => ({ ...f, faqs: updated }));
   };
 
   const submit = async (e) => {
@@ -135,6 +158,7 @@ const ProductForm = () => {
         sizes: typeof form.sizes === 'string' ? form.sizes.split(',').map((s) => s.trim()).filter(Boolean) : form.sizes,
         colors: typeof form.colors === 'string' ? form.colors.split(',').map((c) => c.trim()).filter(Boolean) : form.colors,
         sku: form.sku || undefined,
+        faqs: (form.faqs || []).filter(item => item && (item.question?.trim() || item.answer?.trim())),
       };
       const saved = isEdit ? await productApi.update(id, payload) : await productApi.create(payload);
 
@@ -145,6 +169,7 @@ const ProductForm = () => {
         await productApi.uploadDetailImages(saved.id, detailFiles);
       }
 
+      toast.success(isEdit ? 'Product updated successfully!' : 'Product created successfully!');
       navigate('/admin/products');
     } catch (err) {
       setError(err.message || 'Failed to save product');

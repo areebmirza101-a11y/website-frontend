@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, ArrowRight } from 'lucide-react';
 import { apiFetch, assetUrl } from '../api/client';
 import Seo from '../components/Seo';
 
@@ -76,7 +76,7 @@ const UserBlogs = () => {
                   </h3>
                   <div className="mt-auto">
                     <span className="text-sm font-bold text-accent uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-2 transition-transform duration-300">
-                      Read Article &rarr;
+                      Read Article <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </span>
                   </div>
                 </div>

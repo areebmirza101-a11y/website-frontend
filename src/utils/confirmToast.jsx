@@ -27,7 +27,7 @@ export const confirmAction = (message, onConfirm, onCancel) => {
     </div>
   ), {
     duration: Infinity,
-    position: 'top-center',
+    position: 'top-right',
     style: {
       border: '1px solid #fee2e2',
       padding: '16px',

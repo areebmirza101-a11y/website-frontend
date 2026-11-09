@@ -1,4 +1,6 @@
+import toast from 'react-hot-toast';
 import { useEffect, useState, Fragment } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { orderApi } from '../../api';
 import { money } from '../../lib/format';
 import { useAdminTitle } from '../../components/admin/useAdminTitle';
@@ -32,11 +34,13 @@ const AdminOrders = () => {
   const changeStatus = async (id, status) => {
     const updated = await orderApi.updateStatus(id, { status });
     setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status: updated.status } : o)));
+    toast.success(`Order #${id} status updated to "${status}"`);
   };
 
   const markPaid = async (id) => {
     const updated = await orderApi.updateStatus(id, { payment_status: 'paid' });
     setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, payment_status: updated.payment_status } : o)));
+    toast.success(`Order #${id} payment marked as paid`);
   };
 
   useAdminTitle('Orders');
@@ -82,13 +86,21 @@ const AdminOrders = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
-                      <select
-                        value={o.status}
-                        onChange={(e) => changeStatus(o.id, e.target.value)}
-                        className={`text-xs px-2.5 py-1.5 rounded-full font-medium border-none outline-none cursor-pointer ${statusColor[o.status] || 'bg-gray-100 text-gray-700'}`}
-                      >
-                        {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
-                      </select>
+                      <div className="relative inline-flex items-center">
+                        <select
+                          value={o.status}
+                          onChange={(e) => changeStatus(o.id, e.target.value)}
+                          className={`text-xs font-semibold pl-3 pr-7 py-1.5 rounded-full border-0 outline-none appearance-none cursor-pointer capitalize shadow-xs transition-all ${statusColor[o.status] || 'bg-gray-100 text-gray-700'}`}
+                          style={{ WebkitAppearance: 'none', MozAppearance: 'none', backgroundImage: 'none' }}
+                        >
+                          {STATUSES.map((s) => (
+                            <option key={s} value={s} className="bg-white text-gray-900 capitalize font-medium">
+                              {s}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown className="h-3.5 w-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-60" />
+                      </div>
                     </td>
                   </tr>
                   {expanded === o.id && (

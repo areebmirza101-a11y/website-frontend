@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { useCurrency } from '../context/CurrencyContext';
 import { productApi } from '../api';
 import { money, productImage, categoryName } from '../lib/format';
 import { assetUrl } from '../api/client';
@@ -12,6 +13,7 @@ const UserProductDetails = () => {
   const { id } = useParams();
   const { addToCart, cartItems } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { formatPrice } = useCurrency();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState(null);
@@ -20,6 +22,7 @@ const UserProductDetails = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [error, setError] = useState(null);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
+  const [openFaq, setOpenFaq] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -97,29 +100,86 @@ const UserProductDetails = () => {
     : null;
   const displayPrice = activePrice != null ? activePrice : product.price;
 
+  const productKeywords = `${product.name}, custom ${product.name}, buy ${product.name} online, handmade ${product.category?.name || 'apparel'}, genuine leather, movie replica outfit, Velmoras Creation`;
+
   return (
     <div className="bg-white min-h-screen pt-12 pb-24">
       <Seo 
         title={product.name}
-        description={product.description}
+        description={product.description || `Handcrafted ${product.name} with custom sizing and worldwide express delivery from Velmoras Creation.`}
+        keywords={productKeywords}
         image={activeImg}
         url={window.location.href}
       />
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Product",
-          "name": product.name,
-          "image": activeImg ? [activeImg] : [],
-          "description": product.description,
-          "sku": product.id,
-          "offers": {
-            "@type": "Offer",
-            "url": window.location.href,
-            "priceCurrency": "USD",
-            "price": displayPrice,
-            "availability": soldOut ? "https://schema.org/OutOfStock" : "https://schema.org/InStock"
-          }
+          "@graph": [
+            {
+              "@type": "Product",
+              "@id": `${window.location.href}#product`,
+              "name": product.name,
+              "image": activeImg ? [activeImg] : [],
+              "description": product.description || product.name,
+              "sku": String(product.sku || product.id),
+              "brand": {
+                "@type": "Brand",
+                "name": "Velmoras Creation"
+              },
+              "offers": {
+                "@type": "Offer",
+                "url": window.location.href,
+                "priceCurrency": "USD",
+                "price": displayPrice,
+                "itemCondition": "https://schema.org/NewCondition",
+                "availability": soldOut ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+                "seller": {
+                  "@type": "Organization",
+                  "name": "Velmoras Creation"
+                }
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://velmorascreation.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Shop",
+                  "item": "https://velmorascreation.com/products"
+                },
+                ...(product.category?.name ? [{
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": product.category.name,
+                  "item": `https://velmorascreation.com/products?category=${encodeURIComponent(product.category.slug || '')}`
+                }] : []),
+                {
+                  "@type": "ListItem",
+                  "position": product.category?.name ? 4 : 3,
+                  "name": product.name,
+                  "item": window.location.href
+                }
+              ]
+            },
+            ...(Array.isArray(product.faqs) && product.faqs.length > 0 ? [{
+              "@type": "FAQPage",
+              "mainEntity": product.faqs.map(f => ({
+                "@type": "Question",
+                "name": f.question,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": f.answer
+                }
+              }))
+            }] : [])
+          ]
         })}
       </script>
 
@@ -198,9 +258,9 @@ const UserProductDetails = () => {
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-4">{product.name}</h1>
             
             <p className="text-2xl font-semibold text-ink mb-6 flex items-center gap-3">
-              {money(displayPrice)}
+              {formatPrice(displayPrice)}
               {activePrice != null && activePrice !== product.price && (
-                <span className="text-lg font-medium text-gray-400 line-through">{money(product.price)}</span>
+                <span className="text-lg font-medium text-gray-400 line-through">{formatPrice(product.price)}</span>
               )}
             </p>
             

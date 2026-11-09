@@ -111,7 +111,7 @@ export function DualAreaChart({ data = [], seriesA, seriesB }) {
 
   return (
     <div className="w-full">
-      <div style={{ height: 300 }}>
+      <div className="w-full min-w-0" style={{ height: 300, minWidth: 0 }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 16, right: 16, left: 0, bottom: 0 }}>
             <defs>
@@ -186,7 +186,7 @@ export function MultiLineChart({ data = [], series = [], integer = true, formatV
 
   return (
     <div className="w-full">
-      <div style={{ height: 280 }}>
+      <div className="w-full min-w-0" style={{ height: 280, minWidth: 0 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 16, right: 16, left: 0, bottom: 0 }}>
             <CartesianGrid stroke={GRID_COLOR} strokeDasharray="0" vertical={false} />
@@ -239,7 +239,7 @@ export function BarChart({ data = [], color = PALETTE.violet, formatValue = comp
   ];
 
   return (
-    <div style={{ height: 260 }}>
+    <div className="w-full min-w-0" style={{ height: 260, minWidth: 0 }}>
       <ResponsiveContainer width="100%" height="100%">
         <RechartsBarChart data={data} margin={{ top: 16, right: 16, left: 0, bottom: 0 }} barCategoryGap="35%">
           <defs>
@@ -328,7 +328,7 @@ export function DonutChart({ data = [], formatValue = (v) => v }) {
     return (
       <div className="flex flex-col sm:flex-row items-center gap-6">
         <div className="relative shrink-0 opacity-30">
-          <svg viewBox="0 0 180 180" width="160" height="160">
+          <svg viewBox="0 0 180 180" width="130" height="130">
             <circle cx="90" cy="90" r="57" fill="none" stroke="#e2e8f0" strokeWidth="26" />
           </svg>
         </div>
@@ -342,7 +342,7 @@ export function DonutChart({ data = [], formatValue = (v) => v }) {
   let acc = 0;
   const segs = items.map((d) => {
     const frac = d.value / total;
-    const seg  = { ...d, start: acc, end: acc + frac };
+    const seg = { ...d, start: acc, end: acc + frac };
     acc += frac;
     return seg;
   });
@@ -361,9 +361,9 @@ export function DonutChart({ data = [], formatValue = (v) => v }) {
   const hv = hover != null ? segs[hover] : null;
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-6">
+    <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 min-w-0">
       <div className="relative shrink-0">
-        <svg viewBox="0 0 180 180" width="160" height="160" style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.08))' }}>
+        <svg viewBox="0 0 180 180" width="130" height="130" style={{ filter: 'drop-shadow(0 6px 18px rgba(0,0,0,0.06))' }}>
           {segs.map((s, i) => (
             <path
               key={i}
@@ -372,34 +372,43 @@ export function DonutChart({ data = [], formatValue = (v) => v }) {
               opacity={hover == null || hover === i ? 1 : 0.3}
               onMouseEnter={() => setHover(i)}
               onMouseLeave={() => setHover(null)}
-              style={{ transition: 'opacity .2s, transform .2s', cursor: 'pointer', transformOrigin: '90px 90px',
-                       transform: hover === i ? 'scale(1.04)' : 'scale(1)' }}
+              style={{
+                transition: 'opacity .2s, transform .2s',
+                cursor: 'pointer',
+                transformOrigin: '90px 90px',
+                transform: hover === i ? 'scale(1.04)' : 'scale(1)',
+              }}
             />
           ))}
           {/* Center text */}
           <text x="90" y="82" textAnchor="middle" fontSize="11" fill="#94a3b8" fontWeight="600" letterSpacing="0.05em">
             {hv ? hv.name.substring(0, 10) : 'TOTAL'}
           </text>
-          <text x="90" y="103" textAnchor="middle" fontSize="20" fontWeight="800" fill="#0f172a">
+          <text x="90" y="103" textAnchor="middle" fontSize="19" fontWeight="800" fill="#0f172a">
             {formatValue(hv ? hv.value : total)}
           </text>
         </svg>
       </div>
 
-      <div className="flex-1 w-full space-y-2.5">
+      <div className="flex-1 min-w-0 w-full space-y-2">
         {segs.map((s, i) => (
           <div
             key={i}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-2 cursor-pointer group min-w-0"
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover(null)}
+            title={`${s.name}: ${formatValue(s.value)} (${Math.round((s.value / total) * 100)}%)`}
           >
             <span
-              className="w-3 h-3 rounded-full shrink-0 transition-transform group-hover:scale-125"
+              className="w-2.5 h-2.5 rounded-full shrink-0 transition-transform group-hover:scale-125"
               style={{ backgroundColor: s.color, boxShadow: `0 0 8px ${s.color}60` }}
             />
-            <span className="flex-1 truncate text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors">{s.name}</span>
-            <span className="text-xs text-gray-400 tabular-nums font-semibold">{Math.round((s.value / total) * 100)}%</span>
+            <span className="flex-1 min-w-0 truncate text-xs font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">
+              {s.name}
+            </span>
+            <span className="text-[11px] text-gray-400 tabular-nums font-bold shrink-0">
+              {Math.round((s.value / total) * 100)}%
+            </span>
           </div>
         ))}
       </div>
@@ -417,23 +426,30 @@ export function PopularityBars({ data = [], unit = '' }) {
   const max = Math.max(1, ...data.map((d) => d.value));
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 min-w-0">
       {data.map((d, i) => {
         const color = d.color || BAR_COLORS[i % BAR_COLORS.length];
-        const pct   = Math.max((d.value / max) * 100, 4);
+        const pct = Math.max((d.value / max) * 100, 4);
         return (
-          <div key={i} className="group">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2.5">
+          <div key={i} className="group min-w-0">
+            <div className="flex items-center justify-between gap-3 mb-1.5 min-w-0">
+              <div className="flex items-center gap-2.5 min-w-0 flex-1">
                 <span
                   className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
                   style={{ backgroundColor: color, boxShadow: `0 0 10px ${color}60` }}
                 >
                   {i + 1}
                 </span>
-                <span className="text-sm font-semibold text-gray-700 truncate">{d.name}</span>
+                <span
+                  className="text-xs sm:text-sm font-semibold text-gray-700 truncate flex-1 min-w-0"
+                  title={d.name}
+                >
+                  {d.name}
+                </span>
               </div>
-              <span className="text-xs font-bold text-gray-500 tabular-nums">{unit}{d.value}</span>
+              <span className="text-xs font-bold text-gray-500 tabular-nums shrink-0">
+                {unit}{d.value}
+              </span>
             </div>
             <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
               <div

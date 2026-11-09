@@ -1,8 +1,12 @@
+import { useState, useEffect } from 'react';
+import { settingsApi } from '../api';
 import PageHero from '../components/PageHero';
 import Seo from '../components/Seo';
 import { RefreshCcw, HandCoins, ArrowRightLeft, MessageCircleQuestion } from 'lucide-react';
 
 const ReturnRefund = () => {
+  const [settings, setSettings] = useState(null);
+  useEffect(() => { settingsApi.getPublic().then(setSettings).catch(() => {}); }, []);
   return (
     <div className="bg-white min-h-screen pb-24">
       <Seo
@@ -82,7 +86,7 @@ const ReturnRefund = () => {
               <div>
                 <h4 className="font-bold text-ink uppercase tracking-wider text-xs mb-2">Need Help?</h4>
                 <p className="text-sm text-muted">
-                  Our customer service team is ready to assist you with your return. Contact us at <a href="mailto:support@velmorascreation.com" className="font-semibold text-ink hover:text-accent transition-colors">support@velmorascreation.com</a>.
+                  Our customer service team is ready to assist you with your return. Contact us at <a href={`mailto:${settings?.email || 'info@velmorascreation.com'}`} className="hover:text-accent transition-colors">{settings?.email || 'info@velmorascreation.com'}</a>.
                 </p>
               </div>
             </div>

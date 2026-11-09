@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { ArrowLeft, X, Upload } from 'lucide-react';
@@ -127,6 +128,7 @@ const CategoryForm = () => {
       } else {
         await categoryApi.create(bodyToSend);
       }
+      toast.success(isEdit ? 'Category updated successfully!' : 'Category created successfully!');
       navigate('/admin/categories');
     } catch (err) {
       setError(err.message || 'Something went wrong');

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Loader2, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -47,19 +48,30 @@ const UserLogin = () => {
           {mode === 'register' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-              <input required value={form.name} onChange={set('name')} className={input} />
+              <input required disabled={busy} value={form.name} onChange={set('name')} className={input} />
             </div>
           )}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input type="email" required value={form.email} onChange={set('email')} className={input} />
+            <input type="email" required disabled={busy} value={form.email} onChange={set('email')} className={input} />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input type="password" required value={form.password} onChange={set('password')} className={input} />
+            <input type="password" required disabled={busy} value={form.password} onChange={set('password')} className={input} />
           </div>
-          <button type="submit" disabled={busy} className="w-full bg-accent text-accent-foreground py-3 rounded-xl font-medium hover:bg-accent-hover transition-colors disabled:opacity-60">
-            {busy ? 'Please wait…' : mode === 'login' ? 'Sign In' : 'Create Account'}
+          <button
+            type="submit"
+            disabled={busy}
+            className="w-full bg-accent text-accent-foreground py-3.5 rounded-xl font-semibold hover:bg-accent-hover transition-all flex items-center justify-center gap-2.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm active:scale-[0.99]"
+          >
+            {busy ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin shrink-0" />
+                <span>Please wait…</span>
+              </>
+            ) : (
+              <span>{mode === 'login' ? 'Sign In' : 'Create Account'}</span>
+            )}
           </button>
         </form>
 
@@ -70,7 +82,7 @@ const UserLogin = () => {
           </button>
         </p>
         <p className="text-xs text-gray-400 text-center mt-4">
-          <Link to="/" className="hover:text-accent transition-colors">← Back to store</Link>
+          <Link to="/" className="group inline-flex items-center gap-1.5 hover:text-accent transition-colors"><ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" /> Back to store</Link>
         </p>
       </div>
     </div>

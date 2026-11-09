@@ -1,8 +1,12 @@
+import { useState, useEffect } from 'react';
+import { settingsApi } from '../api';
 import PageHero from '../components/PageHero';
 import Seo from '../components/Seo';
 import { Scale, BookOpen, AlertTriangle, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 const TermsConditions = () => {
+  const [settings, setSettings] = useState(null);
+  useEffect(() => { settingsApi.getPublic().then(setSettings).catch(() => {}); }, []);
   return (
     <div className="bg-white min-h-screen pb-24">
       <Seo
@@ -69,8 +73,8 @@ const TermsConditions = () => {
               <h2 className="text-lg font-bold text-ink mb-4 uppercase tracking-wider text-sm">Questions about our Terms?</h2>
               <p className="mb-6">If you need clarification regarding any of these terms before making a purchase, please reach out to us.</p>
               <ul className="space-y-3 font-medium text-ink text-sm">
-                <li><span className="text-muted w-20 inline-block uppercase tracking-wider text-xs">Email</span> <a href="mailto:support@velmorascreation.com" className="hover:text-accent transition-colors">support@velmorascreation.com</a></li>
-                <li><span className="text-muted w-20 inline-block uppercase tracking-wider text-xs">Phone</span> <a href="tel:+923000000000" className="hover:text-accent transition-colors">+92 300 0000000</a></li>
+                <li><span className="text-muted w-20 inline-block uppercase tracking-wider text-xs">Email</span> <a href={`mailto:${settings?.email || 'info@velmorascreation.com'}`} className="hover:text-accent transition-colors">{settings?.email || 'info@velmorascreation.com'}</a></li>
+                <li><span className="text-muted w-20 inline-block uppercase tracking-wider text-xs">Phone</span> <a href={`tel:${settings?.phone || settings?.whatsapp || ''}`} className="hover:text-accent transition-colors">{settings?.phone || settings?.whatsapp || '+92 300 0000000'}</a></li>
               </ul>
             </section>
           </div>

@@ -9,6 +9,7 @@ import AdminCategories from '../pages/admin/AdminCategories';
 import CategoryForm from '../pages/admin/CategoryForm';
 import AdminOrders from '../pages/admin/AdminOrders';
 import AdminCustomers from '../pages/admin/AdminCustomers';
+import AdminLetterbox from '../pages/admin/AdminLetterbox';
 import AdminSettings from '../pages/admin/AdminSettings';
 import AdminHomeSettings from '../pages/admin/AdminHomeSettings';
 import AdminSales from '../pages/admin/AdminSales';
@@ -40,6 +41,7 @@ const AdminRoutes = () => {
         <Route path="categories/:id/edit" element={<CategoryForm />} />
         <Route path="orders" element={<AdminOrders />} />
         <Route path="customers" element={<AdminCustomers />} />
+        <Route path="letterbox" element={<AdminLetterbox />} />
         <Route path="size-guides" element={<AdminSizeGuide />} />
         <Route path="settings" element={<AdminSettings />} />
         <Route path="home-settings" element={<AdminHomeSettings />} />

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { productApi, categoryApi } from '../api';
 import { useSales } from '../context/SalesContext';
 import Seo from '../components/Seo';
+import { getContextualKeywords } from '../lib/seoKeywords';
 
 const UserProducts = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -89,6 +90,12 @@ const UserProducts = () => {
 
   const topCategories = categories.filter(c => !c.parent_id);
 
+  // Dynamic Keyword Cluster Selection based on Category / Search
+  const currentCategoryName = categories.find((c) => c.slug === categoryParam)?.name?.toLowerCase() || '';
+  const searchLower = (searchParam || '').toLowerCase();
+  const queryContext = `${currentCategoryName} ${searchLower}`;
+  const dynamicKeywords = getContextualKeywords(queryContext);
+
   return (
     <div className="bg-gray-50 min-h-screen pt-16 pb-32">
       <Seo
@@ -101,10 +108,10 @@ const UserProducts = () => {
         }
         description={
           categories.find((c) => c.slug === categoryParam)
-            ? `Explore handcrafted ${categories.find((c) => c.slug === categoryParam).name} custom cosplay costumes and replica apparel at Velmoras Creation.`
-            : 'Browse our complete catalog of movie-accurate custom cosplay costumes, cinema replicas, and bespoke tailored apparel.'
+            ? `Explore handcrafted ${categories.find((c) => c.slug === categoryParam).name} custom cosplay costumes, leather jackets and replica apparel at Velmoras Creation.`
+            : 'Browse our complete catalog of movie-accurate custom cosplay costumes, genuine leather jackets, cinema replicas, and bespoke collectible accessories.'
         }
-        keywords="cosplay costumes, custom cosplay, movie suits, replica apparel, Velmoras"
+        keywords={dynamicKeywords}
         url={window.location.href}
       />
       <div className="w-[90%] max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -242,7 +249,7 @@ const UserProducts = () => {
                           className="flex flex-col items-center justify-center p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:border-accent hover:shadow-md transition-all group"
                         >
                           <span className="text-lg font-semibold text-ink group-hover:text-accent mb-1">{sub.name}</span>
-                          <span className="text-sm text-muted">View Collection &rarr;</span>
+                          <span className="text-sm text-muted inline-flex items-center gap-1.5 group-hover:text-accent transition-colors">View Collection <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" /></span>
                         </button>
                       ))}
                     </div>

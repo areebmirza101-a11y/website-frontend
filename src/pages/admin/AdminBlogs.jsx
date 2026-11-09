@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, CheckCircle, XCircle } from 'lucide-react';
+import { Plus, Edit2, Trash2, CheckCircle, XCircle, BookOpen } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { apiFetch } from '../../api/client';
 import BlogForm from './BlogForm';
+import { useAdminTitle } from '../../components/admin/useAdminTitle';
+import { confirmAction } from '../../utils/confirmToast';
+import Seo from '../../components/Seo';
 
 const AdminBlogs = () => {
+  useAdminTitle('Blogs');
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingBlog, setEditingBlog] = useState(null);
@@ -22,15 +26,16 @@ const AdminBlogs = () => {
     fetchBlogs();
   }, []);
 
-  const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this blog?')) {
-      apiFetch(`/blogs/${id}`, { method: 'DELETE', auth: true })
-        .then(() => {
-          toast.success('Blog deleted successfully');
-          fetchBlogs();
-        })
-        .catch((err) => toast.error(err.message || 'Failed to delete blog'));
-    }
+  const handleDelete = (id, title) => {
+    confirmAction(`Delete blog "${title || 'Post'}"?`, async () => {
+      try {
+        await apiFetch(`/blogs/${id}`, { method: 'DELETE', auth: true });
+        toast.success('Blog deleted successfully');
+        fetchBlogs();
+      } catch (err) {
+        toast.error(err.message || 'Failed to delete blog');
+      }
+    });
   };
 
   if (isFormOpen) {
@@ -51,81 +56,110 @@ const AdminBlogs = () => {
   }
 
   return (
-    <div className="p-8 w-[90%] max-w-[1920px] mx-auto">
-      <div className="flex justify-between items-center mb-8">
+    <div className="w-full">
+      <Seo title="Admin — Blogs" />
+
+      <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-ink">Blogs</h1>
-          <p className="text-gray-500 mt-1">Manage your blog posts and articles.</p>
+          <h2 className="text-2xl font-bold text-gray-900">Blogs</h2>
+          <p className="text-sm text-gray-500 mt-1">Manage your blog posts and published articles.</p>
         </div>
         <button
-          onClick={() => setIsFormOpen(true)}
-          className="bg-accent text-white px-6 py-3 rounded-xl font-bold tracking-widest text-sm hover:bg-ink transition-colors flex items-center gap-2 shadow-lg shadow-accent/20"
+          onClick={() => {
+            setEditingBlog(null);
+            setIsFormOpen(true);
+          }}
+          className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-gray-800 transition-colors shadow-xs self-start sm:self-auto"
         >
-          <Plus className="w-5 h-5" /> NEW BLOG
+          <Plus className="h-4 w-4" /> Add Blog
         </button>
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+        <div className="flex items-center justify-center h-64 bg-white rounded-2xl border border-gray-100 shadow-xs">
+          <div className="w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : blogs.length === 0 ? (
-        <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-100">
-          <h3 className="text-xl font-bold text-gray-900 mb-2">No blogs found</h3>
-          <p className="text-gray-500 mb-6">Create your first blog post to engage your audience.</p>
+        <div className="bg-white rounded-2xl p-16 text-center shadow-xs border border-gray-100">
+          <BookOpen className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-gray-900 mb-1">No blogs found</h3>
+          <p className="text-sm text-gray-500 mb-6 max-w-sm mx-auto">
+            Create your first blog post to engage your audience with fashion and store updates.
+          </p>
+          <button
+            onClick={() => {
+              setEditingBlog(null);
+              setIsFormOpen(true);
+            }}
+            className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-gray-800 transition-colors shadow-xs"
+          >
+            <Plus className="h-4 w-4" /> Create First Blog
+          </button>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="bg-white rounded-2xl shadow-xs border border-gray-100 overflow-hidden">
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b border-gray-100 text-xs uppercase text-gray-500 tracking-wider">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Title</th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Author</th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-4 text-left font-medium">Title</th>
+                <th className="px-6 py-4 text-left font-medium">Author</th>
+                <th className="px-6 py-4 text-left font-medium">Status</th>
+                <th className="px-6 py-4 text-left font-medium">Date</th>
+                <th className="px-6 py-4 text-right font-medium">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-100">
               {blogs.map((blog) => (
-                <tr key={blog.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-bold text-ink">{blog.title}</div>
-                    <div className="text-sm text-gray-500">/{blog.slug}</div>
+                <tr key={blog.id} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-6 py-4">
+                    <div className="font-semibold text-gray-900 text-sm">{blog.title}</div>
+                    <div className="text-xs text-gray-400 mt-0.5">/{blog.slug}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-6 py-4 text-sm text-gray-600">
                     {blog.author || 'Admin'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold tracking-wider ${blog.is_published ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${
+                        blog.is_published
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                          : 'bg-amber-50 text-amber-700 border border-amber-200'
+                      }`}
+                    >
                       {blog.is_published ? (
-                        <><CheckCircle className="w-3 h-3" /> Published</>
+                        <>
+                          <CheckCircle className="w-3.5 h-3.5" /> Published
+                        </>
                       ) : (
-                        <><XCircle className="w-3 h-3" /> Draft</>
+                        <>
+                          <XCircle className="w-3.5 h-3.5" /> Draft
+                        </>
                       )}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 text-sm text-gray-500">
                     {new Date(blog.created_at).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right space-x-3">
-                    <button
-                      onClick={() => {
-                        setEditingBlog(blog);
-                        setIsFormOpen(true);
-                      }}
-                      className="text-accent hover:text-ink transition-colors p-2 hover:bg-gray-100 rounded-lg inline-block"
-                      title="Edit"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(blog.id)}
-                      className="text-red-500 hover:text-red-700 transition-colors p-2 hover:bg-red-50 rounded-lg inline-block"
-                      title="Delete"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => {
+                          setEditingBlog(blog);
+                          setIsFormOpen(true);
+                        }}
+                        className="p-1.5 text-gray-400 hover:text-gray-900 bg-white border border-gray-200 rounded-lg shadow-xs hover:shadow transition-all"
+                        title="Edit"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(blog.id, blog.title)}
+                        className="p-1.5 text-gray-400 hover:text-red-600 bg-white border border-gray-200 rounded-lg shadow-xs hover:shadow transition-all"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

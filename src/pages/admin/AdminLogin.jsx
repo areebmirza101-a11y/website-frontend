@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
@@ -46,14 +47,25 @@ const AdminLogin = () => {
           <form onSubmit={submit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-1">Email</label>
-              <input type="email" required value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} className={input} />
+              <input type="email" required disabled={busy} value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} className={input} />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-1">Password</label>
-              <input type="password" required value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))} className={input} />
+              <input type="password" required disabled={busy} value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))} className={input} />
             </div>
-            <button type="submit" disabled={busy} className="w-full bg-white text-gray-900 py-3 rounded-xl font-medium hover:bg-gray-100 transition-colors disabled:opacity-60">
-              {busy ? 'Signing in…' : 'Sign In'}
+            <button
+              type="submit"
+              disabled={busy}
+              className="w-full bg-white text-gray-900 py-3.5 rounded-xl font-semibold hover:bg-gray-100 transition-all flex items-center justify-center gap-2.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm active:scale-[0.99]"
+            >
+              {busy ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin text-gray-900 shrink-0" />
+                  <span>Signing in…</span>
+                </>
+              ) : (
+                <span>Sign In</span>
+              )}
             </button>
           </form>
         </div>

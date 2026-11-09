@@ -1,3 +1,4 @@
+import { useAdminTitle } from '../../components/admin/useAdminTitle';
 import { useState, useEffect } from 'react';
 import { Plus, Trash2, Save, GripVertical } from 'lucide-react';
 import { adminSizeGuideApi } from '../../api';
@@ -5,6 +6,7 @@ import toast from 'react-hot-toast';
 import { confirmAction } from '../../utils/confirmToast';
 
 const AdminSizeGuide = () => {
+  useAdminTitle('Size Guides');
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

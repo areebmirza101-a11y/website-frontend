@@ -34,7 +34,7 @@ const Seo = ({
   title,
   description = 'Velmoras Creation - Premium custom-made cosplay costumes, handcrafted cinema outfits, tunics, robes & accessories with worldwide shipping.',
   keywords = 'cosplay costumes, custom cosplay, handcrafted costumes, cinema outfits, bespoke tailoring, Velmoras Creation',
-  image = 'https://www.velmorascreation.com/logo.png',
+  image = 'https://velmorascreation.com/logo.png',
   url,
   type = 'website',
   noindex = false,

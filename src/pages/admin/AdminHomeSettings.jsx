@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { Save, Upload } from 'lucide-react';
 import { settingsApi } from '../../api';
@@ -20,6 +21,7 @@ const AdminHomeSettings = () => {
     feature_3_title: '',
     feature_3_desc: '',
   });
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
@@ -47,7 +49,8 @@ const AdminHomeSettings = () => {
           feature_3_desc: s.feature_3_desc || '',
         }));
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const setField = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -73,10 +76,9 @@ const AdminHomeSettings = () => {
         hero_bg: updated.hero_bg || '',
         hero_bg_file: null,
       }));
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
+      toast.success('Home page settings saved successfully!');
     } catch (err) {
-      setError(err.message || 'Failed to save home settings');
+      toast.error(err.message || 'Failed to save home settings');
     } finally {
       setSaving(false);
     }
@@ -88,9 +90,25 @@ const AdminHomeSettings = () => {
     <div className="max-w-6xl">
       <Seo title="Admin — Home Settings" />
 
-      {saved && <div className="mb-6 p-3 rounded-lg bg-teal-50 border border-teal-200 text-teal-700 text-sm">Home Settings saved successfully.</div>}
-      {error && <div className="mb-6 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">{error}</div>}
+      
+      
 
+      {loading ? (
+        <div className="grid gap-6 lg:grid-cols-2 animate-pulse">
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 space-y-4">
+            <div className="h-6 w-36 bg-gray-200 rounded" />
+            <div className="h-10 bg-gray-100 rounded-xl" />
+            <div className="h-20 bg-gray-100 rounded-xl" />
+            <div className="h-20 bg-gray-100 rounded-xl" />
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 space-y-4">
+            <div className="h-6 w-36 bg-gray-200 rounded" />
+            <div className="h-10 bg-gray-100 rounded-xl" />
+            <div className="h-10 bg-gray-100 rounded-xl" />
+            <div className="h-10 bg-gray-100 rounded-xl" />
+          </div>
+        </div>
+      ) : (
       <form onSubmit={submit} className="grid gap-6 lg:grid-cols-2">
         {/* Hero Background */}
         <Card title="Hero Section">
@@ -104,13 +122,13 @@ const AdminHomeSettings = () => {
             </div>
           )}
           <F label="Hero Title">
-            <textarea rows={3} value={form.hero_title} onChange={setField('hero_title')} className={input} placeholder="Elevate Your Home..." />
+            <textarea rows={3} value={form.hero_title} onChange={setField('hero_title')} className={input} placeholder="Screen-Accurate Cosplay & Cinema Costumes..." />
           </F>
           <F label="Hero Subtitle">
-            <textarea rows={3} value={form.hero_subtitle} onChange={setField('hero_subtitle')} className={input} placeholder="A furniture e-commerce company..." />
+            <textarea rows={3} value={form.hero_subtitle} onChange={setField('hero_subtitle')} className={input} placeholder="Handcrafted custom-made cosplay outfits, cinema replicas, armor..." />
           </F>
           <F label="CTA Button Text">
-            <input value={form.cta_text} onChange={setField('cta_text')} className={input} placeholder="Buy Now" />
+            <input value={form.cta_text} onChange={setField('cta_text')} className={input} placeholder="Explore Costumes" />
           </F>
           <F label="CTA Button Link">
             <input value={form.cta_link} onChange={setField('cta_link')} className={input} placeholder="/products" />
@@ -146,6 +164,7 @@ const AdminHomeSettings = () => {
           </button>
         </div>
       </form>
+      )}
     </div>
   );
 };

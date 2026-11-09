@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { Save, Upload, Plus, Trash2 } from 'lucide-react';
 import { settingsApi, authApi } from '../../api';
@@ -27,6 +28,7 @@ const AdminSettings = () => {
     social_links: [],
   });
   const [pwdForm, setPwdForm] = useState({ current_password: '', new_password: '' });
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [savingPwd, setSavingPwd] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -63,7 +65,8 @@ const AdminSettings = () => {
           social_links: typeof s.social_links === 'string' ? JSON.parse(s.social_links) : (s.social_links || []),
         }));
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const setField = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -94,10 +97,9 @@ const AdminSettings = () => {
         app_logo_file: null,
         app_favicon_file: null,
       }));
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
+      toast.success('Settings saved successfully!');
     } catch (err) {
-      setError(err.message || 'Failed to save settings');
+      toast.error(err.message || 'Failed to save settings');
     } finally {
       setSaving(false);
     }
@@ -111,10 +113,9 @@ const AdminSettings = () => {
     try {
       await authApi.changePassword(pwdForm.current_password, pwdForm.new_password);
       setPwdForm({ current_password: '', new_password: '' });
-      setPwdSaved(true);
-      setTimeout(() => setPwdSaved(false), 3000);
+      toast.success('Password changed successfully!');
     } catch (err) {
-      setPwdError(err.message || 'Failed to change password');
+      toast.error(err.message || 'Failed to change password');
     } finally {
       setSavingPwd(false);
     }
@@ -126,11 +127,27 @@ const AdminSettings = () => {
     <div className="max-w-6xl">
       <Seo title="Admin — Settings" />
 
-      {saved && <div className="mb-6 p-3 rounded-lg bg-teal-50 border border-teal-200 text-teal-700 text-sm">Settings saved successfully.</div>}
-      {error && <div className="mb-6 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">{error}</div>}
-      {pwdSaved && <div className="mb-6 p-3 rounded-lg bg-teal-50 border border-teal-200 text-teal-700 text-sm">Password changed successfully.</div>}
-      {pwdError && <div className="mb-6 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">{pwdError}</div>}
+      
+      
+      
+      
 
+      {loading ? (
+        <div className="grid gap-6 lg:grid-cols-2 animate-pulse">
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 space-y-4">
+            <div className="h-6 w-40 bg-gray-200 rounded" />
+            <div className="h-10 bg-gray-100 rounded-xl" />
+            <div className="h-10 bg-gray-100 rounded-xl" />
+            <div className="h-10 bg-gray-100 rounded-xl" />
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 space-y-4">
+            <div className="h-6 w-40 bg-gray-200 rounded" />
+            <div className="h-10 bg-gray-100 rounded-xl" />
+            <div className="h-10 bg-gray-100 rounded-xl" />
+            <div className="h-10 bg-gray-100 rounded-xl" />
+          </div>
+        </div>
+      ) : (
       <form onSubmit={submit} className="grid gap-6 lg:grid-cols-2">
         {/* Company Information */}
         <Card title="Company Information">
@@ -250,6 +267,7 @@ const AdminSettings = () => {
           </button>
         </div>
       </form>
+      )}
     </div>
   );
 };

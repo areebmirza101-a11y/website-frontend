@@ -1,10 +1,9 @@
-import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { LayoutDashboard, Package, Tags, ShoppingCart, LogOut, Store, Settings, MessageCircle, Users, Sun, Moon, Ruler, Percent, BookOpen } from 'lucide-react';
+import { NavLink, Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { LayoutDashboard, Package, Tags, ShoppingCart, LogOut, Store, Settings, MessageCircle, Users, Sun, Moon, Ruler, Percent, BookOpen, Mail } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import AdminPageTitleContext from './AdminPageTitleContext';
-import { Toaster } from 'react-hot-toast';
 
 const nav = [
   { to: '/admin', end: true, label: 'Dashboard', icon: LayoutDashboard },
@@ -12,6 +11,7 @@ const nav = [
   { to: '/admin/categories', label: 'Categories', icon: Tags },
   { to: '/admin/orders', label: 'Orders', icon: ShoppingCart },
   { to: '/admin/customers', label: 'Customers', icon: Users },
+  { to: '/admin/letterbox', label: 'Customer Mailbox', icon: Mail },
   { to: '/admin/sales', label: 'Sales & Promos', icon: Percent },
   { to: '/admin/blogs', label: 'Blogs', icon: BookOpen },
   { to: '/admin/settings', label: 'General Settings', icon: Settings },
@@ -27,6 +27,15 @@ const AdminLayout = ({ children }) => {
   const [pageTitle, setPageTitle] = useState('');
   const [headerActions, setHeaderActions] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setPageTitle('');
+    setHeaderActions(null);
+  }, [location.pathname]);
+
+  const matchedNav = [...nav].reverse().find(item => item.end ? location.pathname === item.to : location.pathname.startsWith(item.to));
+  const activeTitle = pageTitle || matchedNav?.label || 'Dashboard';
 
   const handleLogout = () => {
     logout();
@@ -35,9 +44,9 @@ const AdminLayout = ({ children }) => {
 
   return (
     <AdminPageTitleContext.Provider value={{ setPageTitle, setHeaderActions }}>
-      <Toaster position="top-center" />
-      <div className="min-h-screen bg-gray-100 flex transition-colors duration-300">
-        <aside className="w-64 bg-gray-900 text-gray-300 flex flex-col fixed inset-y-0 transition-colors duration-300 z-20">
+      
+      <div className="min-h-screen bg-gray-100 transition-colors duration-300">
+        <aside className="w-64 bg-gray-900 text-gray-300 flex flex-col fixed inset-y-0 transition-colors duration-300 z-40">
           <div className="h-20 flex items-center px-6 border-b border-gray-800">
             <span className="font-bold text-xl tracking-[0.2em] text-white">Velmoras</span>
             <span className="ml-2 text-xs text-gray-500 uppercase tracking-wider">Admin</span>
@@ -69,10 +78,10 @@ const AdminLayout = ({ children }) => {
           </div>
         </aside>
 
-        <div className="flex-1 ml-64 flex flex-col min-h-screen">
-          <header className="h-20 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-center justify-between px-8 sticky top-0 z-10 transition-colors duration-300">
+        <div className="ml-64 flex flex-col min-h-screen min-w-0">
+          <header className="fixed top-0 right-0 left-64 h-20 bg-white/95 backdrop-blur-md border-b border-gray-200 flex items-center justify-between px-8 z-30 transition-colors duration-300 shadow-xs">
             <h1 className="text-xl font-bold text-gray-900 transition-colors duration-300">
-              {pageTitle}
+              {activeTitle}
             </h1>
             <div className="flex items-center gap-6">
               {headerActions}
@@ -92,7 +101,8 @@ const AdminLayout = ({ children }) => {
               </div>
             </div>
           </header>
-          <main className="p-8 flex-1 animate-in fade-in slide-in-from-bottom-4 duration-500 text-gray-900">
+          <div className="h-20 shrink-0" aria-hidden="true" />
+          <main className="p-4 sm:p-6 lg:p-8 flex-1 min-w-0 animate-in fade-in slide-in-from-bottom-4 duration-500 text-gray-900">
             {children}
             <Outlet />
           </main>

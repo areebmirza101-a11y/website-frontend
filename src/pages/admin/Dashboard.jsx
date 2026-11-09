@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, Tags, ShoppingCart, Users, DollarSign, AlertTriangle, MessageCircle, TrendingUp, Globe, Percent, UserPlus, MapPin } from 'lucide-react';
+import { Package, Tags, ShoppingCart, Users, DollarSign, AlertTriangle, MessageCircle, TrendingUp, Globe, Percent, UserPlus, MapPin, ArrowRight } from 'lucide-react';
 import { adminApi } from '../../api';
 import { money } from '../../lib/format';
 import { useAdminTitle, useAdminActions } from '../../components/admin/useAdminTitle';
@@ -44,7 +44,53 @@ const Card = ({ title, action, children, className = '' }) => (
   </div>
 );
 
-const compactMoney = (v) => (v >= 1000 ? `$${(v / 1000).toFixed(1)}k` : `$${Math.round(v)}`);
+const compactMoney = (v) => (v >= 1000 ? `${(v / 1000).toFixed(1)}k` : `${Math.round(v)}`);
+
+const DashboardSkeleton = () => (
+  <div className="animate-pulse space-y-6">
+    <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
+      {[...Array(6)].map((_, i) => (
+        <div key={i} className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs h-32 flex flex-col justify-between">
+          <div className="flex items-center justify-between">
+            <div className="h-3 w-16 bg-gray-200 rounded-md" />
+            <div className="w-10 h-10 rounded-full bg-gray-100" />
+          </div>
+          <div>
+            <div className="h-7 w-24 bg-gray-200 rounded-md mb-2" />
+            <div className="h-3 w-12 bg-gray-100 rounded-md" />
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+      <div className="xl:col-span-2 bg-white rounded-2xl border border-gray-100 p-6 shadow-xs h-96 flex flex-col justify-between">
+        <div className="h-5 w-40 bg-gray-200 rounded-md" />
+        <div className="h-64 w-full bg-gray-100/70 rounded-xl" />
+      </div>
+      <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs h-96 flex flex-col justify-between">
+        <div className="h-5 w-36 bg-gray-200 rounded-md" />
+        <div className="h-64 w-48 bg-gray-100/70 rounded-full mx-auto" />
+      </div>
+    </div>
+
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+      <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs h-80 flex flex-col justify-between">
+        <div className="h-5 w-32 bg-gray-200 rounded-md" />
+        <div className="space-y-3">
+          {[...Array(4)].map((_, j) => (
+            <div key={j} className="h-6 w-full bg-gray-100 rounded-md" />
+          ))}
+        </div>
+      </div>
+      <div className="xl:col-span-2 bg-white rounded-2xl border border-gray-100 p-6 shadow-xs h-80 flex flex-col justify-between">
+        <div className="h-5 w-36 bg-gray-200 rounded-md" />
+        <div className="h-52 w-full bg-gray-100/70 rounded-xl" />
+      </div>
+    </div>
+  </div>
+);
+
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -82,7 +128,7 @@ const Dashboard = () => {
   }, [range.start, range.end]);
 
   if (error) return <div className="text-red-600">{error}</div>;
-  if (!stats) return <div className="text-gray-400">Loading dashboard…</div>;
+  if (!stats) return <DashboardSkeleton />;
 
   const visitors = stats.visitors || { total: 0, visitsRange: 0, uniqueRange: 0, series: [], topPages: [] };
   const deltas = stats.deltas || {};
@@ -91,7 +137,7 @@ const Dashboard = () => {
   return (
     <div>
       {/* Stat tiles with deltas — 6 cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
         <StatCard to="/admin/orders" icon={DollarSign} label="Revenue" value={money(stats.revenueRange)} accent="bg-indigo-50 text-indigo-600" sub={rangeLabel} delta={deltas.revenue} />
         <StatCard to="/admin/orders" icon={ShoppingCart} label="Orders" value={stats.ordersRange} accent="bg-blue-50 text-blue-600" sub={`${stats.paidCountRange} paid`} delta={deltas.orders} />
         <StatCard icon={Globe} label="Visitors" value={Math.round(visitors.visitsRange)} accent="bg-amber-50 text-amber-600" sub={`${Math.round(visitors.uniqueRange)} unique`} delta={deltas.visitors} />
@@ -105,7 +151,7 @@ const Dashboard = () => {
         <Card
           title="Revenue & Traffic"
           className="xl:col-span-2"
-          action={<span className="inline-flex items-center gap-1 text-xs text-gray-400"><TrendingUp className="h-4 w-4" /> {stats.range?.start} → {stats.range?.end}</span>}
+          action={<span className="inline-flex items-center gap-1 text-xs text-gray-400"><TrendingUp className="h-4 w-4" /> {stats.range?.start} <ArrowRight className="h-3 w-3 inline text-gray-400" /> {stats.range?.end}</span>}
         >
           <DualAreaChart
             data={stats.timeseries}
@@ -114,7 +160,7 @@ const Dashboard = () => {
           />
         </Card>
 
-        <Card title="Sales by Category" action={<Link to="/admin/products" className="text-sm text-gray-500 hover:text-gray-900">Products →</Link>}>
+        <Card title="Sales by Category" action={<Link to="/admin/products" className="group inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 font-medium">Products <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></Link>}>
           <DonutChart data={stats.salesByCategory || []} formatValue={compactMoney} />
         </Card>
       </div>
@@ -151,8 +197,8 @@ const Dashboard = () => {
           title={<span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-gray-400" /> Traffic · Orders · Inquiries Trend & Top Countries</span>}
           action={<span className="text-xs text-gray-400">{rangeLabel}</span>}
         >
-          <div className="flex flex-col xl:flex-row gap-8">
-            <div className="flex-1">
+          <div className="flex flex-col xl:flex-row gap-8 min-w-0">
+            <div className="flex-1 min-w-0">
               <MultiLineChart
                 data={stats.timeseries}
                 integer={true}
@@ -190,7 +236,7 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent orders */}
-        <Card title="Recent Orders" action={<Link to="/admin/orders" className="text-sm text-gray-500 hover:text-gray-900">View all →</Link>}>
+        <Card title="Recent Orders" action={<Link to="/admin/orders" className="group inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 font-medium">View all <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></Link>}>
           {stats.recentOrders.length === 0 ? (
             <p className="text-sm text-gray-400 py-8 text-center">No orders yet.</p>
           ) : (
@@ -211,7 +257,7 @@ const Dashboard = () => {
         </Card>
 
         {/* Top selling products */}
-        <Card title="Top Products" action={<Link to="/admin/products" className="text-sm text-gray-500 hover:text-gray-900">View all →</Link>}>
+        <Card title="Top Products" action={<Link to="/admin/products" className="group inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 font-medium">View all <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></Link>}>
           {!stats.topProducts || stats.topProducts.length === 0 ? (
             <p className="text-sm text-gray-400 py-8 text-center">No product sales yet.</p>
           ) : (
@@ -251,12 +297,12 @@ const Dashboard = () => {
         </Card>
 
         {/* Order status (Moved here from top) */}
-        <Card title="Order status" action={<Link to="/admin/orders" className="text-sm text-gray-500 hover:text-gray-900">View all →</Link>}>
+        <Card title="Order status" action={<Link to="/admin/orders" className="group inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 font-medium">View all <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></Link>}>
           <StatusBreakdown data={stats.ordersByStatus} />
         </Card>
 
         {/* Recent messages */}
-        <Card title="Recent Messages" action={<Link to="/admin/messages" className="text-sm text-gray-500 hover:text-gray-900">View all →</Link>}>
+        <Card title="Recent Messages" action={<Link to="/admin/messages" className="group inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 font-medium">View all <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></Link>}>
           {!stats.recentMessages || stats.recentMessages.length === 0 ? (
             <p className="text-sm text-gray-400 py-8 text-center">No messages yet.</p>
           ) : (

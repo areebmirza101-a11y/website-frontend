@@ -3,6 +3,7 @@ import { Heart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useSales } from '../context/SalesContext';
+import { useCurrency } from '../context/CurrencyContext';
 import { money, productImage, categoryName } from '../lib/format';
 import { assetUrl } from '../api/client';
 
@@ -10,6 +11,7 @@ const ProductCard = ({ product }) => {
   const { addToCart, cartItems } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { getProductSale } = useSales();
+  const { formatPrice } = useCurrency();
 
   const quickAdd = (e) => {
     e.preventDefault();
@@ -28,14 +30,14 @@ const ProductCard = ({ product }) => {
   const currentPrice = saleInfo ? saleInfo.salePrice : product.price;
 
   return (
-    <div className="group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] hover:shadow-accent/20 border border-gray-200 shadow-sm p-2 relative">
+    <div className="group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(0,0,0,0.08)] hover:shadow-accent/15 border border-gray-200 shadow-sm p-2 relative">
       {/* Top Image Section */}
       <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-b from-gray-50 to-gray-100 block rounded-[1.5rem]">
         <Link to={targetUrl} className="block w-full h-full">
           <img
             src={displayImage}
             alt={product.name}
-            className="w-full h-full object-contain mix-blend-multiply transition-all duration-1000 group-hover:scale-110 group-hover:rotate-1"
+            className="w-full h-full object-contain mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           />
         </Link>
         
@@ -102,11 +104,11 @@ const ProductCard = ({ product }) => {
           <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 sm:gap-0">
             {saleInfo ? (
               <>
-                <p className="text-sm sm:text-base font-extrabold text-[#BA9B74] whitespace-nowrap">{money(currentPrice)}</p>
-                <p className="text-[10px] sm:text-[11px] font-bold text-gray-400 line-through whitespace-nowrap">{money(product.price)}</p>
+                <p className="text-sm sm:text-base font-extrabold text-[#BA9B74] whitespace-nowrap">{formatPrice(currentPrice)}</p>
+                <p className="text-[10px] sm:text-[11px] font-bold text-gray-400 line-through whitespace-nowrap">{formatPrice(product.price)}</p>
               </>
             ) : (
-              <p className="text-sm sm:text-base font-extrabold text-ink bg-gray-50 px-2 py-0.5 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl whitespace-nowrap">{money(currentPrice)}</p>
+              <p className="text-sm sm:text-base font-extrabold text-ink bg-gray-50 px-2 py-0.5 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl whitespace-nowrap">{formatPrice(currentPrice)}</p>
             )}
           </div>
         </div>

@@ -37,6 +37,9 @@
 }
 
 @layer base {
+  html {
+    overflow-x: clip;
+  }
   .dark {
     /* Flip standard Tailwind colors globally for dark mode */
     --color-white: var(--color-gray-900);
@@ -202,8 +205,8 @@
   content: '';
   position: absolute;
   top: 19px;
-  left: 50px;
-  right: 50px;
+  left: 35px;
+  right: 35px;
   height: 3px;
   background: #e2e8f0;
   z-index: 1;
@@ -252,3 +255,59 @@
   color: #0f172a;
   font-weight: 700;
 }
+
+/* ============================================================
+   MOBILE RESPONSIVENESS (< 640px) FOR ORDER CONFIRMATION
+   ============================================================ */
+@media (max-width: 640px) {
+  .order-success-hero {
+    padding: 26px 14px 22px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+  }
+  .success-icon-wrapper {
+    width: 62px;
+    height: 62px;
+    margin-bottom: 14px;
+  }
+  .order-subtitle {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 10px;
+  }
+  .order-stepper {
+    margin: 22px auto 0;
+    padding: 0;
+  }
+  .order-stepper::before {
+    top: 15px;
+    left: 18px;
+    right: 18px;
+    height: 2px;
+  }
+  .stepper-circle {
+    width: 30px;
+    height: 30px;
+    border-width: 2px;
+    margin-bottom: 4px;
+  }
+  .stepper-circle svg {
+    width: 14px;
+    height: 14px;
+  }
+  .stepper-label {
+    font-size: 10px;
+    line-height: 1.2;
+    padding: 0 2px;
+  }
+}
+
+@keyframes toast-progress {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+

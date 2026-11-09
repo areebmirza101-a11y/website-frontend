@@ -3,13 +3,15 @@ import { useNavigate, Link } from 'react-router-dom';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { orderApi } from '../api';
+import { useCurrency } from '../context/CurrencyContext';
+import { orderApi, couponApi } from '../api';
 import { money } from '../lib/format';
-import { CreditCard, Truck, AlertCircle } from 'lucide-react';
+import { CreditCard, Truck, AlertCircle, Tag, X, Check, Loader2 } from 'lucide-react';
 
 const UserCheckout = () => {
   const { cartItems, cartTotal, clearCart } = useCart();
   const { user } = useAuth();
+  const { currency, formatPrice } = useCurrency();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -25,6 +27,40 @@ const UserCheckout = () => {
   const [paymentMethod, setPaymentMethod] = useState('paypal'); // 'paypal' or 'manual'
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponError, setCouponError] = useState(null);
+
+  const discountAmount = appliedCoupon ? appliedCoupon.discount_amount : 0;
+  const finalPayableTotal = Math.max(0, cartTotal - discountAmount);
+
+  const handleApplyCoupon = async (e) => {
+    e?.preventDefault();
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    setCouponError(null);
+    try {
+      const res = await couponApi.validate(couponCode.trim(), cartTotal);
+      if (res.valid) {
+        setAppliedCoupon(res.coupon);
+        setCouponError(null);
+      } else {
+        setCouponError(res.message || 'Invalid coupon code');
+      }
+    } catch (err) {
+      setCouponError(err.message || 'Failed to apply coupon');
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode('');
+    setCouponError(null);
+  };
+
 
   const createdOrderIdRef = useRef(null);
 
@@ -46,7 +82,8 @@ const UserCheckout = () => {
           size: i.size,
           color: i.color,
         })),
-        currency: 'USD',
+        currency: currency || 'USD',
+        coupon_code: appliedCoupon ? appliedCoupon.code : undefined,
       };
       const result = await orderApi.checkout(payload);
       clearCart();
@@ -236,7 +273,7 @@ const UserCheckout = () => {
                       <PayPalScriptProvider
                         options={{
                           clientId: paypalClientId,
-                          currency: 'USD',
+                          currency: currency || 'USD',
                           intent: 'capture',
                         }}
                       >
@@ -264,7 +301,7 @@ const UserCheckout = () => {
                                   size: i.size,
                                   color: i.color,
                                 })),
-                                currency: 'USD',
+                                currency: currency || 'USD',
                               };
                               const result = await orderApi.createPaypalOrder(payload);
                               createdOrderIdRef.current = result.orderId;
@@ -334,7 +371,7 @@ const UserCheckout = () => {
                       className="w-full bg-ink text-white py-5 rounded-2xl font-black text-sm tracking-widest uppercase hover:bg-accent hover:shadow-xl transition-all shadow-md active:scale-[0.98] disabled:opacity-60 flex justify-between px-8 items-center"
                     >
                       <span>{submitting ? 'Processing...' : 'Complete Order'}</span>
-                      <span>{money(cartTotal)}</span>
+                      <span>{formatPrice(finalPayableTotal)}</span>
                     </button>
                   </div>
                 )}
@@ -367,24 +404,99 @@ const UserCheckout = () => {
                       </div>
                       <p className="text-xs font-bold text-gray-600">
                         Qty: {item.quantity} <span className="mx-2 text-gray-300">|</span>{' '}
-                        <span className="text-ink">{money(item.price)}</span>
+                        <span className="text-ink">{formatPrice(item.price)}</span>
                       </p>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="border-t border-gray-100 pt-6 space-y-4">
+              {/* Coupon input / status section */}
+              <div className="border-t border-gray-100 pt-5 pb-5">
+                <label className="block text-[11px] font-black uppercase tracking-widest text-gray-600 mb-2">
+                  Have a Promo Code?
+                </label>
+                {!appliedCoupon ? (
+                  <form onSubmit={handleApplyCoupon} className="space-y-1.5">
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input
+                          type="text"
+                          placeholder="E.G. WELCOME10"
+                          value={couponCode}
+                          onChange={(e) => {
+                            setCouponCode(e.target.value.toUpperCase());
+                            setCouponError(null);
+                          }}
+                          className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 text-xs font-bold uppercase tracking-wider focus:ring-accent focus:border-accent outline-none transition-colors"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={couponLoading || !couponCode.trim()}
+                        className="px-4 py-2.5 bg-ink text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-accent disabled:opacity-50 transition-colors flex items-center gap-1.5 shadow-sm"
+                      >
+                        {couponLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Apply'}
+                      </button>
+                    </div>
+                    {couponError && (
+                      <p className="text-[11px] text-red-600 font-semibold pl-1">{couponError}</p>
+                    )}
+                  </form>
+                ) : (
+                  <div className="flex items-center justify-between p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700">
+                        <Tag className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <div className="font-black tracking-wider text-emerald-900">{appliedCoupon.code}</div>
+                        <div className="text-[10px] text-emerald-700 font-bold">
+                          {appliedCoupon.discount_type === 'percentage'
+                            ? `${appliedCoupon.discount_value}% OFF applied`
+                            : `${appliedCoupon.discount_value} OFF applied`}
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleRemoveCoupon}
+                      className="p-1.5 text-emerald-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Remove coupon"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="border-t border-gray-100 pt-5 space-y-3.5">
                 <div className="flex justify-between text-xs font-bold text-gray-500 uppercase tracking-widest">
                   <p>Subtotal</p>
-                  <p>{money(cartTotal)}</p>
+                  <p>{formatPrice(cartTotal)}</p>
                 </div>
+                {appliedCoupon && (
+                  <div className="flex justify-between text-xs font-bold text-emerald-600 uppercase tracking-widest">
+                    <p className="flex items-center gap-1">
+                      <span>Promo ({appliedCoupon.code})</span>
+                    </p>
+                    <p>-{formatPrice(discountAmount)}</p>
+                  </div>
+                )}
                 <div className="flex justify-between text-xs font-bold text-gray-500 uppercase tracking-widest">
                   <p>Shipping</p>
-                  <p>Calculated later</p>
+                  <p className="text-gray-400 italic font-medium">Calculated later</p>
                 </div>
                 <div className="flex justify-between items-end pt-4 border-t border-gray-100">
-                  <p className="text-sm font-black text-ink uppercase tracking-widest">Total</p>
-                  <p className="text-2xl font-black text-ink">{money(cartTotal)}</p>
+                  <div>
+                    <p className="text-sm font-black text-ink uppercase tracking-widest">Total</p>
+                    {appliedCoupon && (
+                      <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">
+                        You save {formatPrice(discountAmount)}!
+                      </p>
+                    )}
+                  </div>
+                  <p className="text-2xl font-black text-ink">{formatPrice(finalPayableTotal)}</p>
                 </div>
               </div>
             </div>

@@ -1,7 +1,8 @@
-import { X, Plus, Minus, Trash2 } from 'lucide-react';
+import { X, Plus, Minus, Trash2, ArrowRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { money } from '../lib/format';
+import { useCurrency } from '../context/CurrencyContext';
 
 const CartSidebar = () => {
   const { isCartOpen, toggleCart, cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();
@@ -59,7 +60,7 @@ const CartSidebar = () => {
                         {[item.size, item.color].filter(Boolean).join(' · ')}
                       </p>
                     )}
-                    <p className="text-sm font-bold text-ink mt-2">{money(item.price)}</p>
+                    <p className="text-sm font-bold text-ink mt-2">{formatPrice(item.price)}</p>
                   </div>
                   <div className="flex items-center bg-gray-100 rounded-xl w-fit mt-3 border border-gray-200 shadow-sm">
                     <button onClick={() => updateQuantity(item.key, item.quantity - 1)} className="p-2 text-gray-500 hover:text-ink transition-colors">
@@ -80,14 +81,14 @@ const CartSidebar = () => {
           <div className="p-8 border-t border-gray-200/60 bg-white/50 backdrop-blur-md">
             <div className="flex justify-between items-end mb-3">
               <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Subtotal</p>
-              <p className="text-xl font-black text-ink">{money(cartTotal)}</p>
+              <p className="text-xl font-black text-ink">{formatPrice(cartTotal)}</p>
             </div>
             <p className="text-[11px] text-gray-500 mb-6 font-medium italic">Shipping & taxes calculated at checkout.</p>
             <button
               onClick={handleCheckout}
-              className="w-full bg-ink text-white font-black tracking-widest uppercase text-sm py-5 rounded-2xl shadow-xl hover:bg-accent hover:shadow-accent/30 transition-all active:scale-95 flex items-center justify-center gap-2"
+              className="group w-full bg-ink text-white font-black tracking-widest uppercase text-sm py-5 rounded-2xl shadow-xl hover:bg-accent hover:shadow-accent/30 transition-all active:scale-95 flex items-center justify-center gap-2"
             >
-              Checkout <span className="text-lg leading-none">→</span>
+              Checkout <ArrowRight className="h-4 w-4 ml-1.5 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
         )}
