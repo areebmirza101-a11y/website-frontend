@@ -35,6 +35,9 @@ const UserRoutes = () => {
       <Route path="/" element={<UserLayout />}>
         <Route index element={<UserHome />} />
         <Route path="products" element={<UserProducts />} />
+        <Route path="category/:slug" element={<UserProducts />} />
+        <Route path="collection/:slug" element={<UserProducts />} />
+        <Route path="sale" element={<UserProducts />} />
         <Route path="products/:id" element={<UserProductDetails />} />
         <Route path="checkout" element={<UserCheckout />} />
         <Route path="checkout/success" element={<CheckoutSuccess />} />

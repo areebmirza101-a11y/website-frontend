@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams, useLocation } from 'react-router-dom';
 import { ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { productApi, categoryApi } from '../api';
@@ -9,9 +9,13 @@ import { getContextualKeywords } from '../lib/seoKeywords';
 
 const UserProducts = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const categoryParam = searchParams.get('category') || 'all';
+  const { slug } = useParams();
+  const location = useLocation();
+
+  const isSaleRoute = location.pathname === '/sale';
+  const categoryParam = slug || searchParams.get('category') || 'all';
   const searchParam = searchParams.get('search') || '';
-  const onSaleParam = searchParams.get('on_sale') === 'true';
+  const onSaleParam = isSaleRoute || searchParams.get('on_sale') === 'true';
   const sortParam = searchParams.get('sort') || 'newest';
 
   const { getProductSale, activeSales } = useSales();
