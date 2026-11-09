@@ -45,15 +45,24 @@ const AdminOrders = () => {
   };
 
   const deleteOrder = (id) => {
-    confirmAction(`Delete Order #${id}? This will remove the order permanently and cannot be undone.`, async () => {
-      try {
-        await orderApi.delete(id);
-        setOrders((prev) => prev.filter((o) => o.id !== id));
-        toast.success(`Order #${id} deleted successfully`);
-      } catch (err) {
-        toast.error(err.message || 'Failed to delete order');
+    confirmAction(
+      `Delete Order #${id}? This will remove the order and its items permanently from the system. This action cannot be undone.`,
+      async () => {
+        try {
+          await orderApi.delete(id);
+          setOrders((prev) => prev.filter((o) => o.id !== id));
+          toast.success(`Order #${id} deleted successfully`);
+        } catch (err) {
+          toast.error(err.message || 'Failed to delete order');
+        }
+      },
+      undefined,
+      {
+        title: `Delete Order #${id}`,
+        confirmText: 'Yes, Delete Order',
+        cancelText: 'Cancel',
       }
-    });
+    );
   };
 
   useAdminTitle('Orders');

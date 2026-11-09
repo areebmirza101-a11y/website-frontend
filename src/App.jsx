@@ -7,6 +7,7 @@ import AdminRoutes from './routes/AdminRoutes';
 import ScrollToTop from './components/ScrollToTop';
 
 import { Toaster, ToastBar } from 'react-hot-toast';
+import { ConfirmModalRoot } from './utils/confirmToast';
 import { AuthProvider } from './context/AuthContext';
 import { SalesProvider } from './context/SalesContext';
 import { SettingsProvider } from './context/SettingsContext';
@@ -46,6 +47,7 @@ function App() {
   return (
     <>
       <ScrollToTop />
+      <ConfirmModalRoot />
       <Toaster
         position="top-right"
         containerStyle={{ top: 90, zIndex: 999999 }}
